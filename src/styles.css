@@ -145,8 +145,15 @@
 }
 @keyframes spin-slow { to { transform: rotate(360deg); } }
 @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+@keyframes section-zoom {
+  0%   { transform: scale(0.985); filter: brightness(1.25) drop-shadow(0 0 40px oklch(0.78 0.25 200 / 0.6)); }
+  60%  { transform: scale(1.005); filter: brightness(1.1)  drop-shadow(0 0 20px oklch(0.78 0.25 200 / 0.3)); }
+  100% { transform: scale(1);     filter: brightness(1)    drop-shadow(0 0 0    oklch(0.78 0.25 200 / 0)); }
+}
 
 .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
 .animate-dash-flow { animation: dash-flow 2s linear infinite; }
 .animate-float-y { animation: float-y 4s ease-in-out infinite; }
 .animate-spin-slow { animation: spin-slow 30s linear infinite; }
+.section-zoom-in { animation: section-zoom 900ms cubic-bezier(0.22, 1, 0.36, 1); transform-origin: center; will-change: transform, filter; }
+
