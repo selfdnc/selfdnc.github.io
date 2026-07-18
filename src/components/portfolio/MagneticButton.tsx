@@ -34,7 +34,7 @@ export function MagneticButton({ children, variant = "primary", className = "", 
       onMouseMove={onMove}
       onMouseLeave={reset}
       className={`relative px-6 py-3 rounded-full font-display font-semibold tracking-wider transition-shadow ${styles} ${className}`}
-      {...(rest as never)}
+      {...(rest as Record<string, unknown>)}
     >
       {children}
     </motion.button>
