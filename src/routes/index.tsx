@@ -59,8 +59,16 @@ function Home() {
   }, []);
 
   const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    el.classList.remove("section-zoom-in");
+    // force reflow so the animation can replay if the same node is clicked again
+    void el.offsetWidth;
+    el.classList.add("section-zoom-in");
+    window.setTimeout(() => el.classList.remove("section-zoom-in"), 1000);
   };
+
 
   const handleNode = (key: NodeKey) => {
     const sectionMap: Partial<Record<NodeKey, string>> = {
