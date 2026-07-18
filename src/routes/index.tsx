@@ -35,6 +35,8 @@ import { AIStackGraph } from "@/components/portfolio/AIStackGraph";
 import { Timeline } from "@/components/portfolio/Timeline";
 import { BootScreen } from "@/components/portfolio/BootScreen";
 
+// GitHub sync trigger: Lovable auto-deploys this project to the connected repo.
+
 export const Route = createFileRoute("/")({
   component: Home,
   head: () => ({
