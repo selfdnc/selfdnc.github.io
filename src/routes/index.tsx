@@ -73,82 +73,145 @@ function Home() {
 
 
   const handleNode = (key: NodeKey) => {
-    const sectionMap: Partial<Record<NodeKey, string>> = {
-      hero: "hero",
-      about: "about",
-      projects: "projects",
-      experience: "experience",
-      education: "education",
-      certificates: "certificates",
-      services: "services",
-      aistack: "aistack",
-      resume: "resume",
-      contact: "contact",
-      achievements: "achievements",
-    };
-    if (key === "skills") {
-      setOpenNode("skills");
-      return;
-    }
-    const id = sectionMap[key];
-    if (id) {
-        const element = document.getElementById(id);
-        element?.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
-  return (
-    <>
-      <BootScreen visible={!booted} />
-      <ParticleBackground />
-      <MouseGlow />
+    const sectionMap: Partial<Record<NodeKey, string>> = {
 
-      <main className="relative">
-        <TopNav onNav={(id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })} />
-        
-        {/* Naya Network Layout */}
-        <section id="hero" className="min-h-screen flex items-center justify-center pt-20">
-           <NodeNetwork onNodeClick={handleNode} />
-        </section>
+      hero: "hero",
 
-        <About />
-        <ServicesSection />
-        <WorkflowSection />
-        <ProjectsSection />
-        <AIStackSection />
-        <ExperienceSection />
-        <EducationSection />
-        <CertificatesSection onOpen={setOpenNode} />
-        <AchievementsSection />
-        <ResumeSection />
-        <ContactSection />
-        <Footer />
-      </main>
+      about: "about",
 
-      <SectionModal
-        open={openNode === "skills"}
-        onClose={() => setOpenNode(null)}
-        title="Skill Matrix"
-      >
-        <SkillsPanel />
-      </SectionModal>
+      projects: "projects",
 
-      <SectionModal
-        open={openNode === "certificates"}
-        onClose={() => setOpenNode(null)}
-        title="Certificate Preview"
-      >
-        <div className="aspect-[4/3] rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/10 border border-cyan-400/40 flex items-center justify-center">
-          <div className="text-center">
-            <Award className="h-16 w-16 mx-auto text-cyan-300 mb-4" />
-            <h3 className="font-display text-2xl text-gradient">Certified AI Practitioner</h3>
-            <p className="text-sm text-muted-foreground mt-2">Fullscreen preview placeholder</p>
-          </div>
-        </div>
-      </SectionModal>
-    </>
-  );
+      experience: "experience",
+
+      education: "education",
+
+      certificates: "certificates",
+
+      services: "services",
+
+      aistack: "aistack",
+
+      resume: "resume",
+
+      contact: "contact",
+
+      achievements: "achievements",
+
+    };
+
+    if (key === "skills") {
+
+      setOpenNode("skills");
+
+      return;
+
+    }
+
+    const id = sectionMap[key];
+
+    if (id) scrollTo(id);
+
+  };
+
+
+
+  return (
+
+    <>
+
+      <BootScreen visible={!booted} />
+
+      <ParticleBackground />
+
+      <MouseGlow />
+
+
+
+      <main className="relative">
+
+        <TopNav onNav={scrollTo} />
+
+        <Hero onNode={handleNode} onNav={scrollTo} />
+
+        <About />
+
+        <ServicesSection />
+
+        <WorkflowSection />
+
+        <ProjectsSection />
+
+        <AIStackSection />
+
+        <ExperienceSection />
+
+        <EducationSection />
+
+        <CertificatesSection onOpen={setOpenNode} />
+
+        <AchievementsSection />
+
+        <ResumeSection />
+
+        <ContactSection />
+
+        <Footer />
+
+      </main>
+
+
+
+      <SectionModal
+
+        open={openNode === "skills"}
+
+        onClose={() => setOpenNode(null)}
+
+        title="Skill Matrix"
+
+      >
+
+        <SkillsPanel />
+
+      </SectionModal>
+
+
+
+      <SectionModal
+
+        open={openNode === "certificates"}
+
+        onClose={() => setOpenNode(null)}
+
+        title="Certificate Preview"
+
+      >
+
+        <div className="aspect-[4/3] rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/10 border border-cyan-400/40 flex items-center justify-center">
+
+          <div className="text-center">
+
+            <Award className="h-16 w-16 mx-auto text-cyan-300 mb-4" />
+
+            <h3 className="font-display text-2xl text-gradient">Certified AI Practitioner</h3>
+
+            <p className="text-sm text-muted-foreground mt-2">Fullscreen preview placeholder</p>
+
+          </div>
+
+        </div>
+
+      </SectionModal>
+
+    </>
+
+  );
+
 }
+
+
+
 /* ---------- Nav ---------- */
 function TopNav({ onNav }: { onNav: (id: string) => void }) {
   const links = [
