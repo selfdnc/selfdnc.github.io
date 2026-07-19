@@ -43,74 +43,61 @@ interface Props {
 
 export function NodeNetwork({ onNodeClick }: Props) {
   return (
-    <div className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-[#0a0f1c]">
+    <div className="relative w-full h-screen bg-[#0A1F44] flex items-center justify-center overflow-hidden">
       
-      {/* 1. Wahi Background Image jo apne reference mein di hai */}
+      {/* Background Image - High Tech Layer */}
       <div 
-        className="absolute inset-0 z-0 opacity-40"
+        className="absolute inset-0 z-0 opacity-30"
         style={{ 
           backgroundImage: "url('/Screenshot 2026-07-18 115357.jpg')",
           backgroundSize: "cover",
-          backgroundPosition: "center",
-          filter: "brightness(0.5)" // Image ko thoda dark kiya taaki white icons clear dikhein
+          backgroundPosition: "center"
         }} 
       />
 
-      {/* 2. Wahi sare interconnected nodes (lekin main icon hatakar) */}
-      <svg className="absolute inset-0 w-full h-full z-10 pointer-events-none opacity-70">
+      {/* Futuristic Organic Connection Lines (Tedi-Medi Lines) */}
+      <svg className="absolute inset-0 w-full h-full z-10 pointer-events-none opacity-60">
          {NODES.map((n) => {
-            // Agar node 'skills' hai (jahan gears the), toh hum line nahi khichenge 
-            // ya line wahan par khatam kar denge jahan pic aayegi.
-            const isTarget = n.key === "skills"; 
+            const centerX = 50;
+            const centerY = 50;
+            // Tedi-medi line ke liye Quadratic Curve (Q) ka use
+            const midX = (centerX + (n.nx * 100)) / 2 + (Math.random() * 10 - 5);
+            const midY = (centerY + (n.ny * 100)) / 2 + (Math.random() * 10 - 5);
             
             return (
-                <line 
-                    key={n.key}
-                    x1="50%" y1="50%" // Sab lines center se shuru hon
-                    x2={`${n.nx * 100}%`} y2={`${n.ny * 100}%`} 
-                    stroke="white"
-                    strokeWidth="1"
-                    className="opacity-50"
-                    strokeDasharray={isTarget ? "none" : "4 4"} // Pic wali line solid rahegi
-                />
+              <path 
+                key={n.key}
+                d={`M ${centerX} ${centerY} Q ${midX} ${midY} ${n.nx * 100} ${n.ny * 100}`}
+                stroke="#4FC3F7" 
+                strokeWidth="1.5"
+                fill="none"
+                className="drop-shadow-[0_0_5px_rgba(79,195,247,0.8)]"
+              />
             );
          })}
       </svg>
 
-      {/* 3. Center Profile Pic (Yahan humne 'skills' node ko hata diya hai) */}
-      {NODES.map((n) => {
-        // Agar node 'skills' nahi hai, toh normal node dikhao
-        if (n.key !== "skills") {
-          return (
-            <motion.button
-              key={n.key}
-              onClick={() => onNodeClick(n.key)}
-              className="absolute z-20 flex items-center justify-center rounded-full bg-white border border-blue-400 shadow-lg hover:scale-110 transition-transform"
-              style={{ left: `${n.nx * 100}%`, top: `${n.ny * 100}%`, width: 45, height: 45, transform: "translate(-50%, -50%)" }}
-            >
-              <n.icon className="text-blue-900" size={20} />
-            </motion.button>
-          );
-        }
-        // Agar node 'skills' hai, toh wahan profile pic dikhao
-        return null; 
-      })}
-
-      {/* 4. AUTOMATION text (Wahi position par) */}
-      <div className="absolute z-30 text-white text-4xl font-bold tracking-wider font-mono opacity-90">
-        AUTOMATION
-      </div>
-
-      {/* 5. Aapki Profile Pic - Geode/Settings wali position par */}
+      {/* Center Profile (Glassmorphism Effect) */}
       <motion.button
-          onClick={() => onNodeClick("skills")} // Skills node par click karne wala action
-          className="absolute z-20 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full p-[2px] bg-white shadow-[0_0_20px_white] hover:shadow-[0_0_30px_cyan] transition-all"
-          style={{ width: 160, height: 160, top: "55%" }} // Pic ki size aur position adjust ki
+          onClick={() => onNodeClick("hero")}
+          className="absolute z-30 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full p-[2px] bg-gradient-to-br from-[#1E88E5] to-[#B3E5FC] shadow-[0_0_40px_rgba(79,195,247,0.5)]"
       >
-          <div className="rounded-full overflow-hidden w-full h-full border-4 border-white">
+          <div className="rounded-full overflow-hidden w-32 h-32 bg-[#0A1F44] backdrop-blur-md border border-white/20">
             <img src={profileImg} className="w-full h-full object-cover" />
           </div>
       </motion.button>
+
+      {/* Glassmorphism Nodes */}
+      {NODES.map((n) => (
+        <motion.button
+          key={n.key}
+          onClick={() => onNodeClick(n.key)}
+          className="absolute z-20 flex items-center justify-center rounded-full bg-[#1E88E5]/20 backdrop-blur-lg border border-[#4FC3F7]/50 shadow-[0_0_15px_rgba(79,195,247,0.3)] hover:bg-[#4FC3F7]/40 transition-all"
+          style={{ left: `${n.nx * 100}%`, top: `${n.ny * 100}%`, width: 50, height: 50, transform: "translate(-50%, -50%)" }}
+        >
+          <n.icon className="text-[#FFFFFF] drop-shadow-md" size={22} />
+        </motion.button>
+      ))}
     </div>
   );
 }
