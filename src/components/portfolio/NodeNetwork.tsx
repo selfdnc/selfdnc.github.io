@@ -43,59 +43,74 @@ interface Props {
 
 export function NodeNetwork({ onNodeClick }: Props) {
   return (
-    // Poori screen cover karne ke liye fixed height aur background
     <div className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-[#0a0f1c]">
       
-      {/* BACKGROUND IMAGE - Full screen fit */}
+      {/* 1. Wahi Background Image jo apne reference mein di hai */}
       <div 
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 opacity-40"
         style={{ 
           backgroundImage: "url('/Screenshot 2026-07-18 115357.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          backgroundRepeat: "no-repeat"
+          filter: "brightness(0.5)" // Image ko thoda dark kiya taaki white icons clear dikhein
         }} 
       />
-      {/* Dark overlay taaki nodes clear dikhein */}
-      <div className="absolute inset-0 z-0 bg-black/60" />
 
-      {/* NODES AREA */}
-      <div className="relative z-10 w-full h-full max-w-[1200px]">
-        {/* Lines */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none">
-           {NODES.map((n) => (
-              <line 
-                  key={n.key}
-                  x1="50%" y1="50%" 
-                  x2={`${n.nx * 100}%`} y2={`${n.ny * 100}%`} 
-                  stroke="#ffffff" 
-                  strokeWidth="1"
-                  strokeDasharray="4 4"
-                  className="opacity-40"
-              />
-           ))}
-        </svg>
+      {/* 2. Wahi sare interconnected nodes (lekin main icon hatakar) */}
+      <svg className="absolute inset-0 w-full h-full z-10 pointer-events-none opacity-70">
+         {NODES.map((n) => {
+            // Agar node 'skills' hai (jahan gears the), toh hum line nahi khichenge 
+            // ya line wahan par khatam kar denge jahan pic aayegi.
+            const isTarget = n.key === "skills"; 
+            
+            return (
+                <line 
+                    key={n.key}
+                    x1="50%" y1="50%" // Sab lines center se shuru hon
+                    x2={`${n.nx * 100}%`} y2={`${n.ny * 100}%`} 
+                    stroke="white"
+                    strokeWidth="1"
+                    className="opacity-50"
+                    strokeDasharray={isTarget ? "none" : "4 4"} // Pic wali line solid rahegi
+                />
+            );
+         })}
+      </svg>
 
-        {/* Center Profile */}
-        <motion.button
-            onClick={() => onNodeClick("hero")}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white p-1 bg-black"
-        >
-            <img src={profileImg} className="w-24 h-24 rounded-full object-cover" />
-        </motion.button>
+      {/* 3. Center Profile Pic (Yahan humne 'skills' node ko hata diya hai) */}
+      {NODES.map((n) => {
+        // Agar node 'skills' nahi hai, toh normal node dikhao
+        if (n.key !== "skills") {
+          return (
+            <motion.button
+              key={n.key}
+              onClick={() => onNodeClick(n.key)}
+              className="absolute z-20 flex items-center justify-center rounded-full bg-white border border-blue-400 shadow-lg hover:scale-110 transition-transform"
+              style={{ left: `${n.nx * 100}%`, top: `${n.ny * 100}%`, width: 45, height: 45, transform: "translate(-50%, -50%)" }}
+            >
+              <n.icon className="text-blue-900" size={20} />
+            </motion.button>
+          );
+        }
+        // Agar node 'skills' hai, toh wahan profile pic dikhao
+        return null; 
+      })}
 
-        {/* Nodes */}
-        {NODES.map((n) => (
-          <motion.button
-            key={n.key}
-            onClick={() => onNodeClick(n.key)}
-            className="absolute flex items-center justify-center rounded-full bg-white border-2 border-blue-400 shadow-[0_0_10px_white]"
-            style={{ left: `${n.nx * 100}%`, top: `${n.ny * 100}%`, width: 45, height: 45, transform: "translate(-50%, -50%)" }}
-          >
-            <n.icon className="text-blue-900" size={20} />
-          </motion.button>
-        ))}
+      {/* 4. AUTOMATION text (Wahi position par) */}
+      <div className="absolute z-30 text-white text-4xl font-bold tracking-wider font-mono opacity-90">
+        AUTOMATION
       </div>
+
+      {/* 5. Aapki Profile Pic - Geode/Settings wali position par */}
+      <motion.button
+          onClick={() => onNodeClick("skills")} // Skills node par click karne wala action
+          className="absolute z-20 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full p-[2px] bg-white shadow-[0_0_20px_white] hover:shadow-[0_0_30px_cyan] transition-all"
+          style={{ width: 160, height: 160, top: "55%" }} // Pic ki size aur position adjust ki
+      >
+          <div className="rounded-full overflow-hidden w-full h-full border-4 border-white">
+            <img src={profileImg} className="w-full h-full object-cover" />
+          </div>
+      </motion.button>
     </div>
   );
 }
