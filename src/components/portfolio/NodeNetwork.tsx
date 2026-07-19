@@ -42,60 +42,55 @@ interface Props {
 }
 
 export function NodeNetwork({ onNodeClick }: Props) {
-  return (
-    <div className="relative w-full h-screen bg-[#0A1F44] flex items-center justify-center overflow-hidden">
-      
-      {/* Background Image - High Tech Layer */}
-      <div 
-        className="absolute inset-0 z-0 opacity-30"
-        style={{ 
-          backgroundImage: "url('/Screenshot 2026-07-18 115357.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center"
-        }} 
-      />
+  // Center point
+  const cx = 50;
+  const cy = 50;
 
-      {/* Futuristic Organic Connection Lines (Tedi-Medi Lines) */}
-      <svg className="absolute inset-0 w-full h-full z-10 pointer-events-none opacity-60">
-         {NODES.map((n) => {
-            const centerX = 50;
-            const centerY = 50;
-            // Tedi-medi line ke liye Quadratic Curve (Q) ka use
-            const midX = (centerX + (n.nx * 100)) / 2 + (Math.random() * 10 - 5);
-            const midY = (centerY + (n.ny * 100)) / 2 + (Math.random() * 10 - 5);
-            
-            return (
-              <path 
-                key={n.key}
-                d={`M ${centerX} ${centerY} Q ${midX} ${midY} ${n.nx * 100} ${n.ny * 100}`}
-                stroke="#4FC3F7" 
-                strokeWidth="1.5"
-                fill="none"
-                className="drop-shadow-[0_0_5px_rgba(79,195,247,0.8)]"
-              />
-            );
-         })}
+  return (
+    <div className="relative w-full h-screen bg-[var(--color-primary)] flex items-center justify-center overflow-hidden">
+      
+      {/* Background Layer */}
+      <div className="absolute inset-0 z-0 opacity-30" style={{ backgroundImage: "url('/Screenshot 2026-07-18 115357.jpg')", backgroundSize: "cover", backgroundPosition: "center" }} />
+
+      {/* Organic Connections (All to All) */}
+      <svg className="absolute inset-0 w-full h-full z-10 pointer-events-none opacity-40">
+         {NODES.map((n1, i) => (
+            NODES.map((n2, j) => {
+              if (i >= j) return null; // Duplicate lines rokne ke liye
+              const midX = (n1.nx * 100 + n2.nx * 100) / 2 + (Math.random() * 5);
+              const midY = (n1.ny * 100 + n2.ny * 100) / 2 + (Math.random() * 5);
+              return (
+                <path 
+                  key={`${n1.key}-${n2.key}`}
+                  d={`M ${n1.nx * 100} ${n1.ny * 100} Q ${midX} ${midY} ${n2.nx * 100} ${n2.ny * 100}`}
+                  stroke="var(--color-accent)" 
+                  strokeWidth="1"
+                  fill="none"
+                  className="drop-shadow-[0_0_8px_var(--color-glow)]"
+                />
+              );
+            })
+         ))}
       </svg>
 
-      {/* Center Profile (Glassmorphism Effect) */}
+      {/* Central Main Node (Aapki Image) */}
       <motion.button
           onClick={() => onNodeClick("hero")}
-          className="absolute z-30 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full p-[2px] bg-gradient-to-br from-[#1E88E5] to-[#B3E5FC] shadow-[0_0_40px_rgba(79,195,247,0.5)]"
+          className="absolute z-30 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[var(--color-glow)] p-1 bg-[var(--color-primary)] shadow-[0_0_20px_var(--color-glow)]"
+          style={{ width: 80, height: 80 }} // Small size
       >
-          <div className="rounded-full overflow-hidden w-32 h-32 bg-[#0A1F44] backdrop-blur-md border border-white/20">
-            <img src={profileImg} className="w-full h-full object-cover" />
-          </div>
+          <img src={profileImg} className="w-full h-full rounded-full object-cover" />
       </motion.button>
 
-      {/* Glassmorphism Nodes */}
+      {/* Surrounding Nodes */}
       {NODES.map((n) => (
         <motion.button
           key={n.key}
           onClick={() => onNodeClick(n.key)}
-          className="absolute z-20 flex items-center justify-center rounded-full bg-[#1E88E5]/20 backdrop-blur-lg border border-[#4FC3F7]/50 shadow-[0_0_15px_rgba(79,195,247,0.3)] hover:bg-[#4FC3F7]/40 transition-all"
-          style={{ left: `${n.nx * 100}%`, top: `${n.ny * 100}%`, width: 50, height: 50, transform: "translate(-50%, -50%)" }}
+          className="absolute z-20 flex items-center justify-center rounded-full bg-[var(--color-primary)]/50 backdrop-blur-md border border-[var(--color-accent)] shadow-[0_0_10px_var(--color-accent)]"
+          style={{ left: `${n.nx * 100}%`, top: `${n.ny * 100}%`, width: 40, height: 40, transform: "translate(-50%, -50%)" }}
         >
-          <n.icon className="text-[#FFFFFF] drop-shadow-md" size={22} />
+          <n.icon className="text-[var(--color-white)]" size={18} />
         </motion.button>
       ))}
     </div>
