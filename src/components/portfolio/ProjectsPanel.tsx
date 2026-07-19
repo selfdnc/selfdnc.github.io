@@ -1,80 +1,167 @@
 import { motion } from "framer-motion";
-import { ExternalLink, Github, Terminal, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { Github, ExternalLink, ChevronRight } from "lucide-react";
 
-const PROJECTS = [
+const projects = [
   {
-    title: "AI CRM Automation",
-    tech: ["n8n", "OpenAI", "Node.js"],
-    desc: "Automated customer support system reducing response time by 80% through intelligent workflow integration.",
-    link: "#",
-    github: "#"
+    id: "p1",
+    title: "Autonomous Sales Agent",
+    tag: "AI Agent",
+    desc: "Multi-agent system that qualifies leads, drafts personalized emails and books meetings.",
+    features: ["LangGraph orchestration", "CRM sync", "Human-in-the-loop review", "Streamed responses"],
+    stack: ["Python", "LangGraph", "OpenAI", "Postgres", "FastAPI"],
+    challenges: "Guaranteeing deterministic tool routing without over-constraining the model.",
+    solution: "Introduced a validator node with structured JSON schema + retry policy.",
+    github: "#",
+    live: "#",
+    workflow: ["Trigger", "Enrich", "Draft", "Approve", "Send", "Log"],
   },
   {
-    title: "Portfolio OS",
-    tech: ["React", "Tailwind", "Framer"],
-    desc: "A high-performance, modular portfolio shell built with advanced animation and data-node visualization.",
-    link: "#",
-    github: "#"
+    id: "p2",
+    title: "n8n Support Automation",
+    tag: "Workflow",
+    desc: "Zero-touch ticket triage that classifies, replies and escalates across 6 channels.",
+    features: ["24/7 triage", "RAG knowledge base", "Slack + Email + WhatsApp", "SLA analytics"],
+    stack: ["n8n", "OpenAI", "Qdrant", "Node", "Docker"],
+    challenges: "Handling multilingual queries with tone consistency.",
+    solution: "Built a translation + tone-preserving prompt chain with per-brand style guides.",
+    github: "#",
+    live: "#",
+    workflow: ["Inbox", "Classify", "Retrieve", "Draft", "Send", "Analytics"],
+  },
+  {
+    id: "p3",
+    title: "LLM Document Intelligence",
+    tag: "LLM App",
+    desc: "Upload 1000+ page contracts and get clause-level answers with citations in seconds.",
+    features: ["Chunked ingestion", "Hybrid retrieval", "Citations", "Team workspaces"],
+    stack: ["Next.js", "LangChain", "Claude", "Pinecone", "Tailwind"],
+    challenges: "Balancing recall and cost on very long documents.",
+    solution: "Adaptive chunking + reranker with cached embeddings per document hash.",
+    github: "#",
+    live: "#",
+    workflow: ["Upload", "Chunk", "Embed", "Query", "Rerank", "Answer"],
+  },
+  {
+    id: "p4",
+    title: "Ops Copilot Dashboard",
+    tag: "Business Automation",
+    desc: "Real-time ops dashboard where an AI copilot suggests actions and executes with approval.",
+    features: ["Live metrics", "Action queue", "Audit log", "Role-based access"],
+    stack: ["React", "FastAPI", "Postgres", "OpenAI", "Redis"],
+    challenges: "Making AI suggestions explainable to non-technical operators.",
+    solution: "Rendered reasoning traces and confidence scores in the UI.",
+    github: "#",
+    live: "#",
+    workflow: ["Ingest", "Analyze", "Suggest", "Approve", "Execute", "Report"],
   },
 ];
 
 export function ProjectsPanel() {
+  const [openId, setOpenId] = useState<string | null>(null);
   return (
-    <div className="p-8 w-full max-w-5xl mx-auto font-sans">
-      {/* Header with Decorative Terminal Icon */}
-      <div className="flex items-center gap-3 mb-10">
-        <Terminal className="text-[#00ffff]" size={28} />
-        <h2 className="text-4xl font-bold text-white tracking-[0.2em] uppercase">
-          Project <span className="text-[#00ffff]">Archive</span>
-        </h2>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {PROJECTS.map((project, i) => (
+    <div className="grid gap-4 md:grid-cols-2">
+      {projects.map((p, i) => {
+        const isOpen = openId === p.id;
+        return (
           <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 30 }}
+            key={p.id}
+            layout
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.2, duration: 0.5 }}
-            className="group relative p-8 rounded-sm bg-[#001f3f]/40 backdrop-blur-md border border-[#00ffff]/30 overflow-hidden hover:border-[#00ffff]/80 transition-all duration-300"
+            transition={{ delay: i * 0.06 }}
+            className={`glass rounded-xl p-5 cursor-pointer transition-all hover:glow-border ${isOpen ? "md:col-span-2 glow-border" : ""}`}
+            onClick={() => setOpenId(isOpen ? null : p.id)}
           >
-            {/* Hover Glow Effect */}
-            <div className="absolute inset-0 bg-[#00ffff]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-            <div className="relative z-10">
-              <h3 className="text-2xl font-bold text-white mb-4 flex justify-between items-center">
-                {project.title}
-                <ArrowRight className="text-[#00ffff] opacity-0 group-hover:opacity-100 transition-all" />
-              </h3>
-              
-              <p className="text-slate-300 text-sm mb-6 leading-relaxed">
-                {project.desc}
-              </p>
-
-              <div className="flex flex-wrap gap-2 mb-6">
-                {project.tech.map((t) => (
-                  <span key={t} className="text-[11px] px-3 py-1 rounded-sm bg-[#00ffff]/10 text-[#00ffff] font-mono border border-[#00ffff]/20">
-                    {t}
-                  </span>
-                ))}
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <div className="text-[10px] font-mono uppercase tracking-widest text-cyan-300 mb-1">
+                  {p.tag}
+                </div>
+                <h3 className="font-display font-bold text-lg text-cyan-50">{p.title}</h3>
               </div>
-
-              {/* Action Buttons */}
-              <div className="flex gap-4">
-                <a href={project.link} className="flex items-center gap-2 text-[12px] text-white hover:text-[#00ffff] transition-colors">
-                  <ExternalLink size={14} /> LIVE
-                </a>
-                <a href={project.github} className="flex items-center gap-2 text-[12px] text-white hover:text-[#00ffff] transition-colors">
-                  <Github size={14} /> REPO
-                </a>
-              </div>
+              <ChevronRight
+                className={`h-5 w-5 text-cyan-300 transition-transform ${isOpen ? "rotate-90" : ""}`}
+              />
+            </div>
+            <p className="mt-2 text-sm text-muted-foreground">{p.desc}</p>
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {p.stack.slice(0, isOpen ? p.stack.length : 4).map((t) => (
+                <span
+                  key={t}
+                  className="text-[10px] font-mono px-2 py-0.5 rounded-full border border-cyan-400/30 text-cyan-200 bg-cyan-500/5"
+                >
+                  {t}
+                </span>
+              ))}
             </div>
 
-            {/* Corner Decorative Element */}
-            <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-[#00ffff]/50 opacity-0 group-hover:opacity-100 transition-all" />
+            {isOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                className="mt-5 grid gap-5 md:grid-cols-2 overflow-hidden"
+              >
+                <div>
+                  <SubHead>Features</SubHead>
+                  <ul className="space-y-1.5">
+                    {p.features.map((f) => (
+                      <li key={f} className="flex gap-2 text-sm">
+                        <span className="text-cyan-300">▸</span> {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <SubHead className="mt-4">Challenge</SubHead>
+                  <p className="text-sm text-muted-foreground">{p.challenges}</p>
+                  <SubHead className="mt-4">Solution</SubHead>
+                  <p className="text-sm text-muted-foreground">{p.solution}</p>
+                </div>
+                <div>
+                  <SubHead>Workflow / Architecture</SubHead>
+                  <div className="glass rounded-lg p-4">
+                    <div className="flex flex-wrap items-center gap-2 justify-center">
+                      {p.workflow.map((w, idx) => (
+                        <div key={w} className="flex items-center gap-2">
+                          <div className="px-3 py-1.5 rounded-md bg-gradient-to-br from-cyan-500/20 to-blue-500/10 border border-cyan-400/30 font-mono text-xs">
+                            {w}
+                          </div>
+                          {idx < p.workflow.length - 1 && (
+                            <span className="text-cyan-300">→</span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="mt-4 flex gap-2">
+                    <a
+                      href={p.github}
+                      className="flex items-center gap-2 px-3 py-2 rounded-md glass hover:glow-border text-sm"
+                    >
+                      <Github className="h-4 w-4" /> GitHub
+                    </a>
+                    <a
+                      href={p.live}
+                      className="flex items-center gap-2 px-3 py-2 rounded-md bg-gradient-to-r from-cyan-500 to-blue-500 text-background text-sm font-semibold"
+                    >
+                      <ExternalLink className="h-4 w-4" /> Live Demo
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+            )}
           </motion.div>
-        ))}
-      </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function SubHead({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div
+      className={`text-[10px] font-mono uppercase tracking-widest text-cyan-300 mb-2 ${className}`}
+    >
+      {children}
     </div>
   );
 }
