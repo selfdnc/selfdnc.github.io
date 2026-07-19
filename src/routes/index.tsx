@@ -583,7 +583,7 @@ function ResumeSection() {
 /* ---------- Contact ---------- */
 function ContactSection() {
   const items = [
-    { icon: Mail, label: "Email", value: "dev@chauhan.ai", href: "mailto:dev@chauhan.ai" },
+    { icon: Mail, label: "Email", value: "oneselfdnc@gmail.com", href: "oneselfdnc@gmail.com" },
     { icon: Linkedin, label: "LinkedIn", value: "/in/devchauhan", href: "https://linkedin.com" },
     { icon: Github, label: "GitHub", value: "@devchauhan", href: "https://github.com" },
     { icon: MessageCircle, label: "WhatsApp", value: "+91 · on request", href: "#" },
