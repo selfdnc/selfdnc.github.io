@@ -91,7 +91,10 @@ function Home() {
       return;
     }
     const id = sectionMap[key];
-    if (id) scrollTo(id);
+    if (id) {
+        const element = document.getElementById(id);
+        element?.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -101,8 +104,13 @@ function Home() {
       <MouseGlow />
 
       <main className="relative">
-        <TopNav onNav={scrollTo} />
-        <Hero onNode={handleNode} onNav={scrollTo} />
+        <TopNav onNav={(id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })} />
+        
+        {/* Naya Network Layout */}
+        <section id="hero" className="min-h-screen flex items-center justify-center pt-20">
+           <NodeNetwork onNodeClick={handleNode} />
+        </section>
+
         <About />
         <ServicesSection />
         <WorkflowSection />
@@ -141,7 +149,6 @@ function Home() {
     </>
   );
 }
-
 /* ---------- Nav ---------- */
 function TopNav({ onNav }: { onNav: (id: string) => void }) {
   const links = [
