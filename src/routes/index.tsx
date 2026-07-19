@@ -1,705 +1,243 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
+import { useMemo } from "react";
 import {
-  Bot,
-  Workflow,
-  Sparkles,
-  Cpu,
-  Puzzle,
-  Wrench,
-  Github,
-  Linkedin,
-  Mail,
-  MapPin,
-  MessageCircle,
-  Download,
-  Eye,
-  Award,
-  Rocket,
-  Target,
-  Compass,
-  BookOpen,
-  Heart,
+  User,
+  FolderKanban,
+  Cpu,
+  Wrench,
+  Briefcase,
+  Mail,
+  FileText,
+  Award,
+  type LucideIcon,
 } from "lucide-react";
-
-import { ParticleBackground, MouseGlow } from "@/components/portfolio/Background";
-import { NodeNetwork, type NodeKey } from "@/components/portfolio/NodeNetwork";
-import { Typewriter } from "@/components/portfolio/Typewriter";
-import { MagneticButton } from "@/components/portfolio/MagneticButton";
-import { SectionModal } from "@/components/portfolio/SectionModal";
-import { SkillsPanel } from "@/components/portfolio/SkillsPanel";
-import { ProjectsPanel } from "@/components/portfolio/ProjectsPanel";
-import { WorkflowVisualization } from "@/components/portfolio/WorkflowVisualization";
-import { AIStackGraph } from "@/components/portfolio/AIStackGraph";
-import { Timeline } from "@/components/portfolio/Timeline";
-import { BootScreen } from "@/components/portfolio/BootScreen";
-
-// GitHub sync trigger: Lovable auto-deploys this project to the connected repo.
-
-export const Route = createFileRoute("/")({
-  component: Home,
-  head: () => ({
-    meta: [
-      { title: "Dev Chauhan — AI Automation Engineer" },
-      {
-        name: "description",
-        content:
-          "Interactive AI Command Center portfolio: AI agents, workflow automation, LLM apps, and business automation by Dev Chauhan.",
-      },
-    ],
-  }),
-});
-
-function Home() {
-  const [booted, setBooted] = useState(false);
-  const [openNode, setOpenNode] = useState<NodeKey | null>(null);
-
-  useEffect(() => {
-    const t = setTimeout(() => setBooted(true), 1200);
-    return () => clearTimeout(t);
-  }, []);
-
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
-    el.classList.remove("section-zoom-in");
-    // force reflow so the animation can replay if the same node is clicked again
-    void el.offsetWidth;
-    el.classList.add("section-zoom-in");
-    window.setTimeout(() => el.classList.remove("section-zoom-in"), 1000);
-  };
-
-
-  const handleNode = (key: NodeKey) => {
-
-    const sectionMap: Partial<Record<NodeKey, string>> = {
-
-      hero: "hero",
-
-      about: "about",
-
-      projects: "projects",
-
-      experience: "experience",
-
-      education: "education",
-
-      certificates: "certificates",
-
-      services: "services",
-
-      aistack: "aistack",
-
-      resume: "resume",
-
-      contact: "contact",
-
-      achievements: "achievements",
-
-    };
-
-    if (key === "skills") {
-
-      setOpenNode("skills");
-
-      return;
-
-    }
-
-    const id = sectionMap[key];
-
-    if (id) scrollTo(id);
-
-  };
-
-
-
-  return (
-
-    <>
-
-      <BootScreen visible={!booted} />
-
-      <ParticleBackground />
-
-      <MouseGlow />
-
-
-
-      <main className="relative">
-
-        <TopNav onNav={scrollTo} />
-
-        <Hero onNode={handleNode} onNav={scrollTo} />
-
-        <About />
-
-        <ServicesSection />
-
-        <WorkflowSection />
-
-        <ProjectsSection />
-
-        <AIStackSection />
-
-        <ExperienceSection />
-
-        <EducationSection />
-
-        <CertificatesSection onOpen={setOpenNode} />
-
-        <AchievementsSection />
-
-        <ResumeSection />
-
-        <ContactSection />
-
-        <Footer />
-
-      </main>
-
-
-
-      <SectionModal
-
-        open={openNode === "skills"}
-
-        onClose={() => setOpenNode(null)}
-
-        title="Skill Matrix"
-
-      >
-
-        <SkillsPanel />
-
-      </SectionModal>
-
-
-
-      <SectionModal
-
-        open={openNode === "certificates"}
-
-        onClose={() => setOpenNode(null)}
-
-        title="Certificate Preview"
-
-      >
-
-        <div className="aspect-[4/3] rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/10 border border-cyan-400/40 flex items-center justify-center">
-
-          <div className="text-center">
-
-            <Award className="h-16 w-16 mx-auto text-cyan-300 mb-4" />
-
-            <h3 className="font-display text-2xl text-gradient">Certified AI Practitioner</h3>
-
-            <p className="text-sm text-muted-foreground mt-2">Fullscreen preview placeholder</p>
-
-          </div>
-
-        </div>
-
-      </SectionModal>
-
-    </>
-
+import profileImg from "@/assets/profile.jpg";
+
+export type NodeKey =
+  | "hero"
+  | "about"
+  | "projects"
+  | "aistack"
+  | "services"
+  | "experience"
+  | "contact"
+  | "resume"
+  | "certificates"
+  // legacy keys kept for compatibility with existing handlers
+  | "skills"
+  | "education"
+  | "achievements";
+
+type NetNode = { key: NodeKey; label: string; icon: LucideIcon };
+
+const NODES: NetNode[] = [
+  { key: "about",        label: "About",        icon: User },
+  { key: "projects",     label: "Projects",     icon: FolderKanban },
+  { key: "aistack",      label: "AI Stack",     icon: Cpu },
+  { key: "services",     label: "Services",     icon: Wrench },
+  { key: "experience",   label: "Experience",   icon: Briefcase },
+  { key: "contact",      label: "Contact",      icon: Mail },
+  { key: "resume",       label: "Resume",       icon: FileText },
+  { key: "certificates", label: "Certificates", icon: Award },
+];
+
+interface Props {
+  onNodeClick: (key: NodeKey) => void;
+}
+
+/**
+ * Central hub with the operator's photo, surrounded by 8 icon nodes.
+ * Rendered with a circuit-board SVG backdrop plus glowing radial links
+ * that mimic the AUTOMATION reference image.
+ */
+export function NodeNetwork({ onNodeClick }: Props) {
+  const size = 620;
+  const cx = size / 2;
+  const cy = size / 2;
+  const radius = 250;
+
+  const positioned = useMemo(
+    () =>
+      NODES.map((n, i) => {
+        // stagger so nodes don't sit on the exact cardinal axes
+        const angle = (i / NODES.length) * Math.PI * 2 - Math.PI / 2 + Math.PI / NODES.length;
+        return {
+          ...n,
+          x: cx + Math.cos(angle) * radius,
+          y: cy + Math.sin(angle) * radius,
+          angle,
+        };
+      }),
+    [cx, cy, radius],
   );
 
-}
+  return (
+    <div
+      className="relative mx-auto"
+      style={{ width: size, height: size, maxWidth: "94vw", aspectRatio: "1/1" }}
+    >
+      {/* Circuit-board backdrop */}
+      <svg
+        viewBox={`0 0 ${size} ${size}`}
+        className="absolute inset-0 h-full w-full pointer-events-none"
+        aria-hidden
+      >
+        <defs>
+          {/* subtle blue circuit grid */}
+          <pattern id="circuit" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path
+              d="M0 20 H14 M26 20 H40 M20 0 V14 M20 26 V40"
+              stroke="rgba(94,200,255,0.18)"
+              strokeWidth="0.6"
+              fill="none"
+            />
+            <circle cx="20" cy="20" r="1.1" fill="rgba(125,249,255,0.45)" />
+            <circle cx="0" cy="0" r="0.8" fill="rgba(94,200,255,0.35)" />
+          </pattern>
+          <radialGradient id="hubFade" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="rgba(10,25,55,0)" />
+            <stop offset="70%" stopColor="rgba(10,25,55,0.55)" />
+            <stop offset="100%" stopColor="rgba(6,15,35,0.9)" />
+          </radialGradient>
+          <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#5ec8ff" stopOpacity="0.15" />
+            <stop offset="50%" stopColor="#a8f0ff" stopOpacity="0.95" />
+            <stop offset="100%" stopColor="#5ec8ff" stopOpacity="0.15" />
+          </linearGradient>
+          <filter id="glowF" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2.4" result="b" />
+            <feMerge>
+              <feMergeNode in="b" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
 
+        {/* circuit backdrop masked into a big circle */}
+        <circle cx={cx} cy={cy} r={size / 2 - 4} fill="url(#circuit)" opacity="0.55" />
+        <circle cx={cx} cy={cy} r={size / 2 - 4} fill="url(#hubFade)" />
 
+        {/* concentric orbits */}
+        <circle cx={cx} cy={cy} r={radius - 40} fill="none" stroke="rgba(125,249,255,0.12)" strokeWidth="1" />
+        <circle cx={cx} cy={cy} r={radius} fill="none" stroke="rgba(125,249,255,0.16)" strokeDasharray="2 6" />
+        <circle cx={cx} cy={cy} r={radius + 30} fill="none" stroke="rgba(94,200,255,0.08)" />
 
-/* ---------- Nav ---------- */
-function TopNav({ onNav }: { onNav: (id: string) => void }) {
-  const links = [
-    ["about", "About"],
-    ["projects", "Projects"],
-    ["services", "Services"],
-    ["aistack", "Stack"],
-    ["experience", "Experience"],
-    ["contact", "Contact"],
-  ] as const;
-  return (
-    <header className="fixed top-4 left-1/2 -translate-x-1/2 z-40 hidden md:block">
-      <nav className="glass rounded-full px-2 py-2 flex items-center gap-1">
-        <div className="flex items-center gap-2 px-4">
-          <div className="h-2 w-2 rounded-full bg-cyan-300 animate-pulse shadow-[0_0_10px_#7df9ff]" />
-          <span className="font-display font-black text-sm tracking-widest text-gradient">DEV.OS</span>
-        </div>
-        {links.map(([id, label]) => (
-          <button
-            key={id}
-            onClick={() => onNav(id)}
-            className="px-3 py-1.5 rounded-full text-xs font-display font-medium tracking-widest text-cyan-100/80 hover:text-cyan-50 hover:bg-cyan-500/10 transition-colors"
-          >
-            {label.toUpperCase()}
-          </button>
-        ))}
-      </nav>
-    </header>
-  );
-}
+        {/* radial links hub → nodes */}
+        {positioned.map((n) => (
+          <g key={`l-${n.key}`}>
+            <line
+              x1={cx}
+              y1={cy}
+              x2={n.x}
+              y2={n.y}
+              stroke="url(#lineGrad)"
+              strokeWidth="1.4"
+              strokeDasharray="5 7"
+              className="animate-dash-flow"
+              filter="url(#glowF)"
+            />
+          </g>
+        ))}
 
-/* ---------- Hero ---------- */
-function Hero({ onNode, onNav }: { onNode: (k: NodeKey) => void; onNav: (id: string) => void }) {
-  return (
-    <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center pt-24 pb-16 px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.3 }}
-        className="text-center mb-8"
-      >
-        <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 mb-4">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="font-mono text-[11px] tracking-widest text-cyan-100">
-            SYSTEM ONLINE · AI COMMAND CENTER v2.6
-          </span>
-        </div>
-        <h1 className="font-display font-black text-4xl sm:text-6xl md:text-7xl text-gradient text-glow">
-          DEV CHAUHAN
-        </h1>
-        <div className="mt-3 font-display text-lg sm:text-xl text-cyan-100/90 tracking-widest">
-          AI AUTOMATION ENGINEER
-        </div>
-        <div className="mt-4 font-mono text-sm sm:text-base text-cyan-200 min-h-[1.5em]">
-          <span className="text-muted-foreground">$&nbsp;</span>
-          <Typewriter
-            words={[
-              "Building AI Agents",
-              "Workflow Automation",
-              "LLM Applications",
-              "Business Automation",
-            ]}
-          />
-        </div>
-      </motion.div>
+        {/* outer polygon connecting neighboring nodes (mesh feel) */}
+        {positioned.map((n, i) => {
+          const next = positioned[(i + 1) % positioned.length];
+          return (
+            <line
+              key={`p-${n.key}`}
+              x1={n.x}
+              y1={n.y}
+              x2={next.x}
+              y2={next.y}
+              stroke="rgba(125,249,255,0.18)"
+              strokeWidth="1"
+            />
+          );
+        })}
 
-      <motion.div
-        initial={{ opacity: 0, scale: 0.85 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 1.4, duration: 0.8 }}
-        className="my-4"
-      >
-        <NodeNetwork onNodeClick={onNode} />
-      </motion.div>
+        {/* small floating circuit dots */}
+        {Array.from({ length: 14 }).map((_, i) => {
+          const a = (i / 14) * Math.PI * 2;
+          const r = radius + 55 + (i % 3) * 8;
+          const x = cx + Math.cos(a) * r;
+          const y = cy + Math.sin(a) * r;
+          return <circle key={`d-${i}`} cx={x} cy={y} r="1.6" fill="#7df9ff" opacity="0.5" />;
+        })}
+      </svg>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.6 }}
-        className="mt-8 flex flex-wrap items-center justify-center gap-3"
-      >
-        <MagneticButton onClick={() => onNav("projects")}>
-          <Rocket className="h-4 w-4" /> View Projects
-        </MagneticButton>
-        <MagneticButton as="a" href="/resume.pdf" download variant="ghost">
-          <Download className="h-4 w-4" /> Download Resume
-        </MagneticButton>
-        <MagneticButton onClick={() => onNav("contact")} variant="ghost">
-          <Mail className="h-4 w-4" /> Contact Me
-        </MagneticButton>
-      </motion.div>
-    </section>
-  );
-}
+      {/* Rotating rings on top of svg */}
+      <div className="absolute inset-6 rounded-full border border-cyan-400/10 animate-spin-slow pointer-events-none" />
+      <div
+        className="absolute inset-20 rounded-full border border-dashed border-cyan-400/15 pointer-events-none"
+        style={{ animation: "spin-slow 50s linear infinite reverse" }}
+      />
 
-/* ---------- Section wrapper ---------- */
-function Section({
-  id,
-  eyebrow,
-  title,
-  children,
-  subtitle,
-}: {
-  id: string;
-  eyebrow: string;
-  title: string;
-  subtitle?: string;
-  children: React.ReactNode;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-  return (
-    <section id={id} ref={ref} className="relative py-24 px-4 sm:px-6 max-w-7xl mx-auto scroll-mt-24">
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6 }}
-        className="mb-12 text-center"
-      >
-        <div className="inline-flex items-center gap-2 glass rounded-full px-3 py-1 mb-4">
-          <span className="h-1 w-1 rounded-full bg-cyan-300" />
-          <span className="font-mono text-[10px] tracking-[0.3em] text-cyan-200">
-            {eyebrow.toUpperCase()}
-          </span>
-        </div>
-        <h2 className="font-display font-black text-3xl sm:text-5xl text-gradient">
-          {title}
-        </h2>
-        {subtitle && (
-          <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">{subtitle}</p>
-        )}
-      </motion.div>
-      {children}
-    </section>
-  );
-}
+      {/* Center profile hub */}
+      <motion.button
+        onClick={() => onNodeClick("hero")}
+        whileHover={{ scale: 1.04 }}
+        whileTap={{ scale: 0.98 }}
+        className="absolute rounded-full overflow-hidden glow-border animate-pulse-glow group"
+        style={{
+          left: cx - 96,
+          top: cy - 96,
+          width: 192,
+          height: 192,
+        }}
+        aria-label="Dev Chauhan — central hub"
+      >
+        <img
+          src={profileImg}
+          alt="Dev Chauhan, AI Automation Engineer"
+          className="h-full w-full object-cover"
+          width={192}
+          height={192}
+          loading="eager"
+          decoding="async"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 rounded-full ring-2 ring-cyan-300/70 shadow-[inset_0_0_40px_rgba(125,249,255,0.35)]" />
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 font-mono text-[9px] tracking-[0.3em] text-cyan-100/90">
+          AUTOMATION
+        </div>
+      </motion.button>
 
-/* ---------- About ---------- */
-function About() {
-  const cards = [
-    { icon: Target, title: "Career Goal", body: "Ship AI systems that quietly remove entire categories of manual work for teams." },
-    { icon: Heart, title: "Passion", body: "Building agents that reason, act, and improve — end-to-end automation with real business impact." },
-    { icon: BookOpen, title: "Currently Learning", body: "Multi-agent orchestration, evals-first LLM engineering, and event-driven automation." },
-    { icon: Compass, title: "Mission", body: "Make AI automation approachable for founders, ops teams, and non-technical builders." },
-    { icon: Sparkles, title: "Future Vision", body: "A world where every operator has a personal AI copilot wired into their workflow." },
-  ];
-  return (
-    <Section
-      id="about"
-      eyebrow="Module · 01"
-      title="About the Operator"
-      subtitle="Five signals that describe how I approach AI, automation and product."
-    >
-      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {cards.map((c, i) => (
-          <motion.div
-            key={c.title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.08 }}
-            whileHover={{ y: -6 }}
-            className="glass rounded-2xl p-6 hover:glow-border transition-shadow"
-          >
-            <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/30 to-blue-500/10 border border-cyan-400/30">
-              <c.icon className="h-5 w-5 text-cyan-200" />
-            </div>
-            <h3 className="font-display font-bold text-lg text-cyan-50">{c.title}</h3>
-            <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{c.body}</p>
-          </motion.div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ---------- Services ---------- */
-function ServicesSection() {
-  const services = [
-    { icon: Bot, title: "AI Chatbots", body: "Support, sales & internal knowledge bots with RAG and human-in-the-loop." },
-    { icon: Workflow, title: "Workflow Automation", body: "n8n / Make / Zapier pipelines that connect every SaaS your team uses." },
-    { icon: Cpu, title: "AI Agents", body: "Autonomous agents that reason, call tools and complete real business tasks." },
-    { icon: Puzzle, title: "Business Automation", body: "End-to-end automation of ops, sales & marketing playbooks." },
-    { icon: Sparkles, title: "API Integration", body: "Bridge OpenAI/Claude/Gemini with your stack via robust APIs." },
-    { icon: Wrench, title: "Custom AI Solutions", body: "From MVP to production — tailored, evaluated, monitored." },
-  ];
-  return (
-    <Section id="services" eyebrow="Module · 02" title="Services">
-      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {services.map((s, i) => (
-          <motion.div
-            key={s.title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.06 }}
-            whileHover={{ scale: 1.03 }}
-            className="group relative glass rounded-2xl p-6 overflow-hidden hover:glow-border transition-all"
-          >
-            <div className="absolute -top-16 -right-16 h-32 w-32 rounded-full bg-cyan-400/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-            <s.icon className="h-8 w-8 text-cyan-300 mb-4" />
-            <h3 className="font-display font-bold text-lg text-cyan-50">{s.title}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{s.body}</p>
-          </motion.div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ---------- Workflow ---------- */
-function WorkflowSection() {
-  return (
-    <Section
-      id="workflow"
-      eyebrow="Module · 03"
-      title="AI Automation Pipeline"
-      subtitle="A live visualization of how data flows through a typical automation I build."
-    >
-      <WorkflowVisualization />
-    </Section>
-  );
-}
-
-/* ---------- Projects ---------- */
-function ProjectsSection() {
-  return (
-    <Section
-      id="projects"
-      eyebrow="Module · 04"
-      title="Projects"
-      subtitle="Click any card to expand architecture, workflow and tech details."
-    >
-      <ProjectsPanel />
-    </Section>
-  );
-}
-
-/* ---------- AI Stack ---------- */
-function AIStackSection() {
-  return (
-    <Section
-      id="aistack"
-      eyebrow="Module · 05"
-      title="AI Stack"
-      subtitle="The tools I orchestrate every day."
-    >
-      <AIStackGraph />
-    </Section>
-  );
-}
-
-/* ---------- Experience ---------- */
-function ExperienceSection() {
-  return (
-    <Section id="experience" eyebrow="Module · 06" title="Experience">
-      <Timeline
-        items={[
-          {
-            title: "Lead AI Automation Engineer",
-            sub: "FluxAI Studio · Remote",
-            date: "2024 — Present",
-            bullets: [
-              "Shipped 20+ production AI agents across sales, support and ops.",
-              "Cut client operational cost by an average of 42% via n8n + LLM workflows.",
-              "Built internal eval harness for agent quality regression.",
-            ],
-          },
-          {
-            title: "AI Engineer",
-            sub: "Northwind Labs",
-            date: "2023 — 2024",
-            bullets: [
-              "Owned LLM app platform used by 12 enterprise clients.",
-              "Designed multi-tenant RAG stack with hybrid retrieval.",
-            ],
-          },
-          {
-            title: "Full-Stack Developer",
-            sub: "Freelance",
-            date: "2021 — 2023",
-            bullets: [
-              "Delivered 30+ React + Node projects for global clients.",
-              "First automation workflows using Zapier and Make.",
-            ],
-          },
-        ]}
-      />
-    </Section>
-  );
-}
-
-/* ---------- Education ---------- */
-function EducationSection() {
-  return (
-    <Section id="education" eyebrow="Module · 07" title="Education">
-      <Timeline
-        items={[
-          {
-            title: "B.Tech, Computer Science",
-            sub: "Indian Institute of Technology",
-            date: "2019 — 2023",
-            bullets: [
-              "Focus: Machine Learning, Distributed Systems, HCI.",
-              "Graduated with distinction · 8.9 CGPA.",
-              "Achievements: Hackathon winner ×3, Research assistant.",
-            ],
-          },
-          {
-            title: "Higher Secondary — Science",
-            sub: "Delhi Public School",
-            date: "2017 — 2019",
-            bullets: ["Physics, Chemistry, Math, Computer Science.", "Top 2% state rank."],
-          },
-        ]}
-      />
-    </Section>
-  );
-}
-
-/* ---------- Certificates ---------- */
-function CertificatesSection({ onOpen }: { onOpen: (k: NodeKey) => void }) {
-  const certs = [
-    "OpenAI Certified Engineer",
-    "n8n Advanced Workflow",
-    "Google Cloud AI",
-    "LangChain Academy",
-    "Make Automation Pro",
-    "AWS AI Practitioner",
-  ];
-  return (
-    <Section id="certificates" eyebrow="Module · 08" title="Certificates">
-      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {certs.map((c, i) => (
-          <motion.button
-            key={c}
-            onClick={() => onOpen("certificates")}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.05 }}
-            whileHover={{ scale: 1.05, rotate: -0.5 }}
-            className="glass rounded-2xl p-6 text-left hover:glow-border transition-all"
-          >
-            <div className="flex items-center justify-between mb-6">
-              <Award className="h-8 w-8 text-cyan-300" />
-              <span className="font-mono text-[10px] text-muted-foreground">ID · 2024-{100 + i}</span>
-            </div>
-            <h3 className="font-display font-bold text-cyan-50">{c}</h3>
-            <p className="mt-1 text-xs text-muted-foreground">Verified · Click to preview</p>
-          </motion.button>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ---------- Achievements ---------- */
-function AchievementsSection() {
-  const stats = [
-    { n: 60, suffix: "+", label: "Automations shipped" },
-    { n: 42, suffix: "%", label: "Avg cost reduction" },
-    { n: 25, suffix: "+", label: "Happy clients" },
-    { n: 3, suffix: "×", label: "Hackathon wins" },
-  ];
-  return (
-    <Section id="achievements" eyebrow="Module · 09" title="Achievements">
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((s, i) => (
-          <Counter key={s.label} target={s.n} suffix={s.suffix} label={s.label} delay={i * 0.1} />
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-function Counter({ target, suffix, label, delay }: { target: number; suffix: string; label: string; delay: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true });
-  const [n, setN] = useState(0);
-  useEffect(() => {
-    if (!inView) return;
-    let raf = 0;
-    const start = performance.now() + delay * 1000;
-    const dur = 1400;
-    const tick = (t: number) => {
-      const p = Math.min(1, Math.max(0, (t - start) / dur));
-      setN(Math.round(target * (1 - Math.pow(1 - p, 3))));
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [inView, target, delay]);
-  return (
-    <div ref={ref} className="glass rounded-2xl p-6 text-center hover:glow-border transition-shadow">
-      <div className="font-display font-black text-4xl sm:text-5xl text-gradient">
-        {n}
-        {suffix}
-      </div>
-      <div className="mt-2 text-sm text-muted-foreground">{label}</div>
-    </div>
-  );
-}
-
-/* ---------- Resume ---------- */
-function ResumeSection() {
-  return (
-    <Section id="resume" eyebrow="Module · 10" title="Resume">
-      <div className="glass rounded-2xl p-6 sm:p-8">
-        <div className="grid md:grid-cols-3 gap-6 items-center">
-          <div className="md:col-span-2">
-            <h3 className="font-display text-2xl text-cyan-50">Full CV — Dev Chauhan</h3>
-            <p className="mt-2 text-muted-foreground text-sm">
-              A single PDF with career, projects, stack and case studies.
-              Preview inline or download for offline review.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <MagneticButton as="a" href="/resume.pdf">
-                <Eye className="h-4 w-4" /> Preview
-              </MagneticButton>
-              <MagneticButton as="a" href="/resume.pdf" download variant="ghost">
-                <Download className="h-4 w-4" /> Download
-              </MagneticButton>
-            </div>
-          </div>
-          <div className="relative aspect-[3/4] rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/5 border border-cyan-400/30 flex items-center justify-center overflow-hidden">
-            <div className="absolute inset-0 grid-bg opacity-40" />
-            <div className="relative text-center">
-              <div className="font-display font-black text-4xl text-gradient">CV</div>
-              <div className="mt-2 font-mono text-xs text-cyan-200">DEV_CHAUHAN.pdf</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Section>
-  );
-}
-
-/* ---------- Contact ---------- */
-function ContactSection() {
-  const items = [
-    { icon: Mail, label: "Email", value: "dev@chauhan.ai", href: "mailto:dev@chauhan.ai" },
-    { icon: Linkedin, label: "LinkedIn", value: "/in/devchauhan", href: "https://linkedin.com" },
-    { icon: Github, label: "GitHub", value: "@devchauhan", href: "https://github.com" },
-    { icon: MessageCircle, label: "WhatsApp", value: "+91 · on request", href: "#" },
-    { icon: MapPin, label: "Location", value: "Bengaluru, India", href: "#" },
-  ];
-  return (
-    <Section
-      id="contact"
-      eyebrow="Module · 11"
-      title="Open a Channel"
-      subtitle="I usually respond within 24 hours."
-    >
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((it, i) => (
-          <motion.a
-            key={it.label}
-            href={it.href}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.06 }}
-            whileHover={{ y: -4 }}
-            className="glass rounded-2xl p-5 flex items-center gap-4 hover:glow-border transition-all"
-          >
-            <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-cyan-500/25 to-blue-500/5 border border-cyan-400/30 flex items-center justify-center">
-              <it.icon className="h-5 w-5 text-cyan-200" />
-            </div>
-            <div>
-              <div className="font-mono text-[10px] uppercase tracking-widest text-cyan-300">
-                {it.label}
-              </div>
-              <div className="font-display text-cyan-50">{it.value}</div>
-            </div>
-          </motion.a>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="relative py-10 text-center border-t border-cyan-400/10">
-      <div className="font-mono text-xs text-muted-foreground">
-        © {new Date().getFullYear()} DEV CHAUHAN · AI COMMAND CENTER · ALL SYSTEMS NOMINAL
-      </div>
-    </footer>
-  );
+      {/* Icon nodes */}
+      {positioned.map((n, i) => {
+        const Icon = n.icon;
+        return (
+          <motion.button
+            key={n.key}
+            onClick={() => onNodeClick(n.key)}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.15 + i * 0.06, type: "spring", stiffness: 220, damping: 18 }}
+            whileHover={{ scale: 1.18 }}
+            whileTap={{ scale: 0.94 }}
+            className="group absolute -translate-x-1/2 -translate-y-1/2"
+            style={{ left: n.x, top: n.y, willChange: "transform" }}
+            aria-label={`Go to ${n.label}`}
+          >
+            <div className="relative">
+              {/* halo */}
+              <div className="absolute inset-0 rounded-full bg-cyan-400/40 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {/* icon disc — white circle with dark icon like the reference */}
+              <div
+                className="relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-white to-cyan-50 ring-2 ring-cyan-300/70 shadow-[0_0_25px_rgba(125,249,255,0.55)] animate-pulse-glow"
+                style={{ animationDelay: `${i * 0.25}s` }}
+              >
+                <Icon className="h-7 w-7 text-slate-900" strokeWidth={2.2} />
+              </div>
+              {/* label */}
+              <div className="absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap">
+                <span className="font-display text-[10px] font-bold tracking-[0.25em] text-cyan-100/90 group-hover:text-cyan-50 transition-colors">
+                  {n.label.toUpperCase()}
+                </span>
+              </div>
+            </div>
+          </motion.button>
+        );
+      })}
+    </div>
+  );
 }
