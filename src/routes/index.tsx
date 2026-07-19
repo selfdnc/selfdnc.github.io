@@ -1,243 +1,165 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useMemo } from "react";
 import {
-  User,
-  FolderKanban,
-  Cpu,
-  Wrench,
-  Briefcase,
-  Mail,
-  FileText,
   Award,
-  type LucideIcon,
+  Rocket,
+  Mail,
+  Download,
+  Terminal,
+  Cpu,
+  Database,
+  Server,
+  Network,
+  Cog,
+  Bot
 } from "lucide-react";
-import profileImg from "@/assets/profile.jpg";
 
-export type NodeKey =
-  | "hero"
-  | "about"
-  | "projects"
-  | "aistack"
-  | "services"
-  | "experience"
-  | "contact"
-  | "resume"
-  | "certificates"
-  // legacy keys kept for compatibility with existing handlers
-  | "skills"
-  | "education"
-  | "achievements";
+import { ParticleBackground, MouseGlow } from "@/components/portfolio/Background";
+import { NodeNetwork, type NodeKey } from "@/components/portfolio/NodeNetwork";
+import { Typewriter } from "@/components/portfolio/Typewriter";
+import { MagneticButton } from "@/components/portfolio/MagneticButton";
+import { SectionModal } from "@/components/portfolio/SectionModal";
+import { SkillsPanel } from "@/components/portfolio/SkillsPanel";
+import { ProjectsPanel } from "@/components/portfolio/ProjectsPanel";
+import { WorkflowVisualization } from "@/components/portfolio/WorkflowVisualization";
+import { AIStackGraph } from "@/components/portfolio/AIStackGraph";
+import { Timeline } from "@/components/portfolio/Timeline";
+import { BootScreen } from "@/components/portfolio/BootScreen";
 
-type NetNode = { key: NodeKey; label: string; icon: LucideIcon };
+export const Route = createFileRoute("/")({
+  component: Home,
+  head: () => ({
+    meta: [
+      { title: "Deva | Industrial AI Automation" },
+      { name: "description", content: "Cybernetic AI Command Center: Industrial Automation, Robotics, and Data Pipelines by Deva." },
+    ],
+  }),
+});
 
-const NODES: NetNode[] = [
-  { key: "about",        label: "About",        icon: User },
-  { key: "projects",     label: "Projects",     icon: FolderKanban },
-  { key: "aistack",      label: "AI Stack",     icon: Cpu },
-  { key: "services",     label: "Services",     icon: Wrench },
-  { key: "experience",   label: "Experience",   icon: Briefcase },
-  { key: "contact",      label: "Contact",      icon: Mail },
-  { key: "resume",       label: "Resume",       icon: FileText },
-  { key: "certificates", label: "Certificates", icon: Award },
-];
+function Home() {
+  const [booted, setBooted] = useState(false);
+  const [openNode, setOpenNode] = useState<NodeKey | null>(null);
 
-interface Props {
-  onNodeClick: (key: NodeKey) => void;
-}
+  useEffect(() => {
+    const t = setTimeout(() => setBooted(true), 1200);
+    return () => clearTimeout(t);
+  }, []);
 
-/**
- * Central hub with the operator's photo, surrounded by 8 icon nodes.
- * Rendered with a circuit-board SVG backdrop plus glowing radial links
- * that mimic the AUTOMATION reference image.
- */
-export function NodeNetwork({ onNodeClick }: Props) {
-  const size = 620;
-  const cx = size / 2;
-  const cy = size / 2;
-  const radius = 250;
-
-  const positioned = useMemo(
-    () =>
-      NODES.map((n, i) => {
-        // stagger so nodes don't sit on the exact cardinal axes
-        const angle = (i / NODES.length) * Math.PI * 2 - Math.PI / 2 + Math.PI / NODES.length;
-        return {
-          ...n,
-          x: cx + Math.cos(angle) * radius,
-          y: cy + Math.sin(angle) * radius,
-          angle,
-        };
-      }),
-    [cx, cy, radius],
-  );
+  const handleNode = (key: NodeKey) => {
+    if (key === "skills") {
+      setOpenNode("skills");
+      return;
+    }
+    const element = document.getElementById(key);
+    element?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <div
-      className="relative mx-auto"
-      style={{ width: size, height: size, maxWidth: "94vw", aspectRatio: "1/1" }}
-    >
-      {/* Circuit-board backdrop */}
-      <svg
-        viewBox={`0 0 ${size} ${size}`}
-        className="absolute inset-0 h-full w-full pointer-events-none"
-        aria-hidden
-      >
-        <defs>
-          {/* subtle blue circuit grid */}
-          <pattern id="circuit" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path
-              d="M0 20 H14 M26 20 H40 M20 0 V14 M20 26 V40"
-              stroke="rgba(94,200,255,0.18)"
-              strokeWidth="0.6"
-              fill="none"
-            />
-            <circle cx="20" cy="20" r="1.1" fill="rgba(125,249,255,0.45)" />
-            <circle cx="0" cy="0" r="0.8" fill="rgba(94,200,255,0.35)" />
-          </pattern>
-          <radialGradient id="hubFade" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="rgba(10,25,55,0)" />
-            <stop offset="70%" stopColor="rgba(10,25,55,0.55)" />
-            <stop offset="100%" stopColor="rgba(6,15,35,0.9)" />
-          </radialGradient>
-          <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#5ec8ff" stopOpacity="0.15" />
-            <stop offset="50%" stopColor="#a8f0ff" stopOpacity="0.95" />
-            <stop offset="100%" stopColor="#5ec8ff" stopOpacity="0.15" />
-          </linearGradient>
-          <filter id="glowF" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="2.4" result="b" />
-            <feMerge>
-              <feMergeNode in="b" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
+    <div className="bg-[#001f3f] min-h-screen text-white selection:bg-[#00ffff] selection:text-[#001f3f]">
+      <BootScreen visible={!booted} />
+      <ParticleBackground />
+      <MouseGlow />
 
-        {/* circuit backdrop masked into a big circle */}
-        <circle cx={cx} cy={cy} r={size / 2 - 4} fill="url(#circuit)" opacity="0.55" />
-        <circle cx={cx} cy={cy} r={size / 2 - 4} fill="url(#hubFade)" />
+      <main className="relative z-10">
+        <TopNav />
+        
+        {/* Main Network Core */}
+        <section id="hero" className="min-h-screen flex items-center justify-center pt-20">
+           <NodeNetwork onNodeClick={handleNode} />
+        </section>
 
-        {/* concentric orbits */}
-        <circle cx={cx} cy={cy} r={radius - 40} fill="none" stroke="rgba(125,249,255,0.12)" strokeWidth="1" />
-        <circle cx={cx} cy={cy} r={radius} fill="none" stroke="rgba(125,249,255,0.16)" strokeDasharray="2 6" />
-        <circle cx={cx} cy={cy} r={radius + 30} fill="none" stroke="rgba(94,200,255,0.08)" />
+        {/* Sections follow the same industrial logic */}
+        <ProjectsSection />
+        <WorkflowSection />
+        <AIStackSection />
+        <ExperienceSection />
+        <ContactSection />
+        <Footer />
+      </main>
 
-        {/* radial links hub → nodes */}
-        {positioned.map((n) => (
-          <g key={`l-${n.key}`}>
-            <line
-              x1={cx}
-              y1={cy}
-              x2={n.x}
-              y2={n.y}
-              stroke="url(#lineGrad)"
-              strokeWidth="1.4"
-              strokeDasharray="5 7"
-              className="animate-dash-flow"
-              filter="url(#glowF)"
-            />
-          </g>
-        ))}
-
-        {/* outer polygon connecting neighboring nodes (mesh feel) */}
-        {positioned.map((n, i) => {
-          const next = positioned[(i + 1) % positioned.length];
-          return (
-            <line
-              key={`p-${n.key}`}
-              x1={n.x}
-              y1={n.y}
-              x2={next.x}
-              y2={next.y}
-              stroke="rgba(125,249,255,0.18)"
-              strokeWidth="1"
-            />
-          );
-        })}
-
-        {/* small floating circuit dots */}
-        {Array.from({ length: 14 }).map((_, i) => {
-          const a = (i / 14) * Math.PI * 2;
-          const r = radius + 55 + (i % 3) * 8;
-          const x = cx + Math.cos(a) * r;
-          const y = cy + Math.sin(a) * r;
-          return <circle key={`d-${i}`} cx={x} cy={y} r="1.6" fill="#7df9ff" opacity="0.5" />;
-        })}
-      </svg>
-
-      {/* Rotating rings on top of svg */}
-      <div className="absolute inset-6 rounded-full border border-cyan-400/10 animate-spin-slow pointer-events-none" />
-      <div
-        className="absolute inset-20 rounded-full border border-dashed border-cyan-400/15 pointer-events-none"
-        style={{ animation: "spin-slow 50s linear infinite reverse" }}
-      />
-
-      {/* Center profile hub */}
-      <motion.button
-        onClick={() => onNodeClick("hero")}
-        whileHover={{ scale: 1.04 }}
-        whileTap={{ scale: 0.98 }}
-        className="absolute rounded-full overflow-hidden glow-border animate-pulse-glow group"
-        style={{
-          left: cx - 96,
-          top: cy - 96,
-          width: 192,
-          height: 192,
-        }}
-        aria-label="Dev Chauhan — central hub"
-      >
-        <img
-          src={profileImg}
-          alt="Dev Chauhan, AI Automation Engineer"
-          className="h-full w-full object-cover"
-          width={192}
-          height={192}
-          loading="eager"
-          decoding="async"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
-        <div className="absolute inset-0 rounded-full ring-2 ring-cyan-300/70 shadow-[inset_0_0_40px_rgba(125,249,255,0.35)]" />
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 font-mono text-[9px] tracking-[0.3em] text-cyan-100/90">
-          AUTOMATION
-        </div>
-      </motion.button>
-
-      {/* Icon nodes */}
-      {positioned.map((n, i) => {
-        const Icon = n.icon;
-        return (
-          <motion.button
-            key={n.key}
-            onClick={() => onNodeClick(n.key)}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.15 + i * 0.06, type: "spring", stiffness: 220, damping: 18 }}
-            whileHover={{ scale: 1.18 }}
-            whileTap={{ scale: 0.94 }}
-            className="group absolute -translate-x-1/2 -translate-y-1/2"
-            style={{ left: n.x, top: n.y, willChange: "transform" }}
-            aria-label={`Go to ${n.label}`}
-          >
-            <div className="relative">
-              {/* halo */}
-              <div className="absolute inset-0 rounded-full bg-cyan-400/40 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              {/* icon disc — white circle with dark icon like the reference */}
-              <div
-                className="relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-white to-cyan-50 ring-2 ring-cyan-300/70 shadow-[0_0_25px_rgba(125,249,255,0.55)] animate-pulse-glow"
-                style={{ animationDelay: `${i * 0.25}s` }}
-              >
-                <Icon className="h-7 w-7 text-slate-900" strokeWidth={2.2} />
-              </div>
-              {/* label */}
-              <div className="absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap">
-                <span className="font-display text-[10px] font-bold tracking-[0.25em] text-cyan-100/90 group-hover:text-cyan-50 transition-colors">
-                  {n.label.toUpperCase()}
-                </span>
-              </div>
-            </div>
-          </motion.button>
-        );
-      })}
+      <SectionModal open={openNode === "skills"} onClose={() => setOpenNode(null)} title="System Capabilities">
+        <SkillsPanel />
+      </SectionModal>
     </div>
+  );
+}
+
+function TopNav() {
+  return (
+    <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
+      <nav className="glass rounded-sm px-6 py-3 flex items-center gap-8 border border-[#00ffff]/30 bg-[#001f3f]/80 backdrop-blur-md">
+        <div className="flex items-center gap-2 font-mono text-[#00ffff]">
+          <Terminal size={18} />
+          <span className="font-bold tracking-widest">DEVAA_OS</span>
+        </div>
+        {["Projects", "Workflow", "Stack", "Contact"].map((item) => (
+          <a key={item} href={`#${item.toLowerCase()}`} className="text-xs uppercase tracking-widest hover:text-[#00ffff] transition-colors">
+            {item}
+          </a>
+        ))}
+      </nav>
+    </header>
+  );
+}
+
+function ProjectsSection() {
+  return (
+    <section id="projects" className="py-24 px-4 border-t border-[#00ffff]/10">
+      <ProjectsPanel />
+    </section>
+  );
+}
+
+function WorkflowSection() {
+  return (
+    <section id="workflow" className="py-24 px-4 bg-[#001f3f]/50">
+      <div className="max-w-5xl mx-auto mb-12 flex items-center gap-4">
+        <Cog className="text-[#00ffff]" size={32} />
+        <h2 className="text-3xl font-bold tracking-widest uppercase">Automation Pipeline</h2>
+      </div>
+      <WorkflowVisualization />
+    </section>
+  );
+}
+
+function AIStackSection() {
+  return (
+    <section id="stack" className="py-24 px-4">
+      <div className="max-w-5xl mx-auto mb-12 flex items-center gap-4">
+        <Cpu className="text-[#00ffff]" size={32} />
+        <h2 className="text-3xl font-bold tracking-widest uppercase">Core AI Stack</h2>
+      </div>
+      <AIStackGraph />
+    </section>
+  );
+}
+
+function ExperienceSection() {
+  return (
+    <section id="experience" className="py-24 px-4 bg-[#001f3f]/50 border-y border-[#00ffff]/10">
+      <div className="max-w-3xl mx-auto">
+         <Timeline items={[{ title: "Lead Automation Engineer", sub: "FluxAI", date: "2024-Present", bullets: ["Industrial Scale Agents", "n8n Optimization"] }]} />
+      </div>
+    </section>
+  );
+}
+
+function ContactSection() {
+  return (
+    <section id="contact" className="py-24 text-center">
+      <h2 className="text-4xl font-bold mb-8 uppercase tracking-[0.2em]">Initialize <span className="text-[#00ffff]">Contact</span></h2>
+      <MagneticButton onClick={() => window.location.href = 'mailto:deva@chauhan.ai'}>
+        <Mail className="mr-2" /> OPEN CHANNEL
+      </MagneticButton>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="py-10 text-center border-t border-[#00ffff]/10 font-mono text-[10px] text-[#00ffff]/50">
+      © {new Date().getFullYear()} DEVA AUTOMATION · SYSTEM STATUS: NOMINAL
+    </footer>
   );
 }
