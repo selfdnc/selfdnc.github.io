@@ -43,57 +43,59 @@ interface Props {
 
 export function NodeNetwork({ onNodeClick }: Props) {
   return (
+    // Poori screen cover karne ke liye fixed height aur background
     <div className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-[#0a0f1c]">
       
-      {/* 1. Tech Background: Image ko cover kiya aur blue tint diya */}
+      {/* BACKGROUND IMAGE - Full screen fit */}
       <div 
-        className="absolute inset-0 z-0 opacity-30 bg-center bg-cover"
-        style={{ backgroundImage: "url('/Screenshot 2026-07-18 115357.jpg')" }} 
+        className="absolute inset-0 z-0"
+        style={{ 
+          backgroundImage: "url('/Screenshot 2026-07-18 115357.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat"
+        }} 
       />
-      {/* Subtle overlay for better readability */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0a0f1c]/80 via-transparent to-[#0a0f1c]/80" />
+      {/* Dark overlay taaki nodes clear dikhein */}
+      <div className="absolute inset-0 z-0 bg-black/60" />
 
-      {/* 2. Automation Lines (Circuit Connection Look) */}
-      <svg className="absolute inset-0 w-full h-full z-10 pointer-events-none opacity-60">
-         <defs>
-            <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#22d3ee" />
-                <stop offset="100%" stopColor="#3b82f6" />
-            </linearGradient>
-         </defs>
-         {NODES.map((n) => (
-            <motion.line 
-                key={n.key}
-                x1="50%" y1="50%" 
-                x2={`${n.nx * 100}%`} y2={`${n.ny * 100}%`} 
-                stroke="url(#lineGrad)" 
-                strokeWidth="1.5"
-                strokeDasharray="4 4" // Circuit wire jaisa look
-            />
-         ))}
-      </svg>
+      {/* NODES AREA */}
+      <div className="relative z-10 w-full h-full max-w-[1200px]">
+        {/* Lines */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none">
+           {NODES.map((n) => (
+              <line 
+                  key={n.key}
+                  x1="50%" y1="50%" 
+                  x2={`${n.nx * 100}%`} y2={`${n.ny * 100}%`} 
+                  stroke="#ffffff" 
+                  strokeWidth="1"
+                  strokeDasharray="4 4"
+                  className="opacity-40"
+              />
+           ))}
+        </svg>
 
-      {/* 3. Center Profile */}
-      <motion.button
-          onClick={() => onNodeClick("hero")}
-          className="absolute z-20 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full p-[2px] bg-gradient-to-tr from-cyan-500 to-blue-600 shadow-[0_0_30px_rgba(34,211,238,0.4)]"
-      >
-          <div className="rounded-full overflow-hidden w-28 h-28 bg-black">
-            <img src={profileImg} className="w-full h-full object-cover" />
-          </div>
-      </motion.button>
-
-      {/* 4. Nodes (Tech Icon Style) */}
-      {NODES.map((n) => (
+        {/* Center Profile */}
         <motion.button
-          key={n.key}
-          onClick={() => onNodeClick(n.key)}
-          className="absolute z-20 flex items-center justify-center rounded-full bg-[#0d1829] border border-cyan-500/50 shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:border-cyan-300 hover:shadow-[0_0_25px_rgba(34,211,238,0.5)] transition-all"
-          style={{ left: `${n.nx * 100}%`, top: `${n.ny * 100}%`, width: 50, height: 50, transform: "translate(-50%, -50%)" }}
+            onClick={() => onNodeClick("hero")}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white p-1 bg-black"
         >
-          <n.icon className="text-cyan-400" size={22} />
+            <img src={profileImg} className="w-24 h-24 rounded-full object-cover" />
         </motion.button>
-      ))}
+
+        {/* Nodes */}
+        {NODES.map((n) => (
+          <motion.button
+            key={n.key}
+            onClick={() => onNodeClick(n.key)}
+            className="absolute flex items-center justify-center rounded-full bg-white border-2 border-blue-400 shadow-[0_0_10px_white]"
+            style={{ left: `${n.nx * 100}%`, top: `${n.ny * 100}%`, width: 45, height: 45, transform: "translate(-50%, -50%)" }}
+          >
+            <n.icon className="text-blue-900" size={20} />
+          </motion.button>
+        ))}
+      </div>
     </div>
   );
 }
