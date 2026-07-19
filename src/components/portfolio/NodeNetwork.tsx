@@ -42,7 +42,8 @@ interface Props {
 }
 
 export function NodeNetwork({ onNodeClick }: Props) {
-  const size = 900;
+  // Size chhota kiya taaki viewport mein fit aaye
+  const size = 600; 
   const cx = size / 2;
   const cy = size / 2;
 
@@ -53,9 +54,9 @@ export function NodeNetwork({ onNodeClick }: Props) {
   }));
 
   return (
-    <div className="relative mx-auto w-full" style={{ maxWidth: 900, aspectRatio: "1/1" }}>
+    // Max-width 600px aur margin auto se ye screen par center aur fit rahega
+    <div className="relative mx-auto w-full max-w-[600px]" style={{ aspectRatio: "1/1" }}>
       <svg viewBox={`0 0 ${size} ${size}`} className="absolute inset-0 h-full w-full" aria-hidden>
-        {/* Simplified Background */}
         <defs>
           <pattern id="circuit" width="48" height="48" patternUnits="userSpaceOnUse">
             <path d="M0 24 H16 M32 24 H48 M24 0 V16 M24 32 V48" stroke="rgba(94,200,255,0.1)" strokeWidth="0.5" fill="none" />
@@ -63,39 +64,37 @@ export function NodeNetwork({ onNodeClick }: Props) {
         </defs>
         <rect x="0" y="0" width={size} height={size} fill="url(#circuit)" opacity="0.4" />
 
-        {/* Primary data pathways */}
         {positioned.map((n) => (
           <line key={n.key} x1={cx} y1={cy} x2={n.x} y2={n.y} stroke="rgba(125,249,255,0.15)" strokeWidth="1" />
         ))}
       </svg>
 
-      {/* Core Profile */}
+      {/* Core Profile: Size 180 se kam karke 120 kiya */}
       <motion.button
         onClick={() => onNodeClick("hero")}
-        className="absolute rounded-full overflow-hidden"
-        style={{ left: "50%", top: "50%", width: 180, height: 180, transform: "translate(-50%,-50%)" }}
+        className="absolute rounded-full overflow-hidden border-2 border-cyan-500/30"
+        style={{ left: "50%", top: "50%", width: 120, height: 120, transform: "translate(-50%,-50%)" }}
       >
         <img src={profileImg} className="h-full w-full object-cover" />
       </motion.button>
 
-      {/* Nodes */}
-      {positioned.map((n, i) => {
+      {/* Nodes: Size 60 se kam karke 45 kiya */}
+      {positioned.map((n) => {
         const Icon = n.icon;
         return (
           <motion.button
             key={n.key}
             onClick={() => onNodeClick(n.key)}
-            className="absolute flex items-center justify-center rounded-full bg-slate-900 border border-cyan-500/50"
+            className="absolute flex items-center justify-center rounded-full bg-slate-900 border border-cyan-500/50 hover:border-cyan-300 transition-colors"
             style={{
               left: `${n.nx * 100}%`,
               top: `${n.ny * 100}%`,
-              width: n.size || 60,
-              height: n.size || 60,
+              width: 45,
+              height: 45,
               transform: "translate(-50%, -50%)",
-              contain: "layout style paint",
             }}
           >
-            <Icon className="text-cyan-400" size={24} />
+            <Icon className="text-cyan-400" size={20} />
           </motion.button>
         );
       })}
