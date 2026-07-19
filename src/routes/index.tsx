@@ -584,8 +584,8 @@ function ResumeSection() {
 function ContactSection() {
   const items = [
     { icon: Mail, label: "Email", value: "oneselfdnc@gmail.com", href: "oneselfdnc@gmail.com" },
-    { icon: Linkedin, label: "LinkedIn", value: "/in/devchauhan", href: "https://linkedin.com" },
-    { icon: Github, label: "GitHub", value: "@devchauhan", href: "https://selfdnc.github.io" },
+    { icon: Linkedin, label: "LinkedIn", value: "/in/devchauhan", href: "#" },
+    { icon: Github, label: "GitHub", value: "@devchauhan", href: "https://selfdnc/selfdnc.github.io" },
     { icon: MessageCircle, label: "WhatsApp", value: "+91 · on request", href: "#" },
     { icon: MapPin, label: "Location", value: "India", href: "#" },
   ];
