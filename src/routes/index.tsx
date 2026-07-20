@@ -444,7 +444,7 @@ function EducationSection() {
             title: "Computer Science",
             bullets: [
               "Focus: Operating Systems, Software Engineering, Cyber Security, FCO.",
-              "Practicals: C, C++, java, Web Dev, DBMS, PHP, PL-SQL.",
+              "Practicals: C, C++, java, Web Dev, DBMS, PHP, PL-SQL, .NET.",
             ],
           },
           {
