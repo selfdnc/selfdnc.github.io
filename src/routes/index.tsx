@@ -441,20 +441,16 @@ function EducationSection() {
       <Timeline
         items={[
           {
-            title: "B.Tech, Computer Science",
-            sub: "Indian Institute of Technology",
-            date: "2019 — 2023",
+            title: "Computer Science",
             bullets: [
-              "Focus: Machine Learning, Distributed Systems, HCI.",
-              "Graduated with distinction · 8.9 CGPA.",
-              "Achievements: Hackathon winner ×3, Research assistant.",
+              "Focus: Operating Systems, Software Engineering, Cyber Security, FCO.",
+              "Practicals: C, C++, java, Web Dev, DBMS, PHP, PL-SQL.",
             ],
           },
           {
             title: "Higher Secondary — Science",
-            sub: "Delhi Public School",
-            date: "2017 — 2019",
-            bullets: ["Physics, Chemistry, Math, Computer Science.", "Top 2% state rank."],
+            bullets: ["Physics, Chemistry, Math, Computer Science.",
+                      "Practicals: Electricity & Measurement, Volumetric & Qualitative Analysis."],
           },
         ]}
       />
