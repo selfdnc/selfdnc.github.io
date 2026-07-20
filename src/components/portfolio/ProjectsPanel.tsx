@@ -27,7 +27,7 @@ const projects = [
     solution: "Deployed a local RAG agent to classify intents and retrieve support documents privately.",
     github: "https://github.com/selfdnc/n8n-support-automation",
     live: "https://github.com/selfdnc/n8n-support-automation",
-    workflow: ["Inbox", "AI Agent", "Classify", "Route", "Draft", "Send", "Analytics"],
+    workflow: ["Inbox", "AI Agent", "Classify", "Route", "Resolve"],
   },
   {
     id: "p3",
