@@ -20,7 +20,7 @@ const projects = [
     id: "p2",
     title: "n8n Support Automation",
     tag: "Workflow",
-    desc: "Zero-touch ticket triage that classifies, replies and escalates across 6 channels.",
+    desc: "Local RAG support agent that classifies intents, retrieves docs, and routes queries.",
     features: ["24/7 triage", "RAG knowledge base", "Webhook / Chat Trigger", "Smart Intent Triage"],
     stack: ["n8n", "Ollama (Llama 3.2)", "Qdrant", "Node", "Docker"],
     challenges: "Ensuring accurate data retrieval & classification from a local, private knowledge base.",
