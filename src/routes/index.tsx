@@ -41,7 +41,7 @@ export const Route = createFileRoute("/")({
   component: Home,
   head: () => ({
     meta: [
-      { title: "Dev Chauhan — AI Automation Engineer" },
+      { title: "Dev Chauhan — AI AGENT & AUTOMATION ARCHITECT" },
       {
         name: "description",
         content:
@@ -200,7 +200,7 @@ function Hero({ onNode, onNav }: { onNode: (k: NodeKey) => void; onNav: (id: str
           DEV CHAUHAN
         </h1>
         <div className="mt-3 font-display text-lg sm:text-xl text-cyan-100/90 tracking-widest">
-          AI AUTOMATION ENGINEER
+          AI AGENT & AUTOMATION ARCHITECT
         </div>
         <div className="mt-4 font-mono text-sm sm:text-base text-cyan-200 min-h-[1.5em]">
           <span className="text-muted-foreground">$&nbsp;</span>
