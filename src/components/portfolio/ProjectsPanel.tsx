@@ -5,16 +5,21 @@ import { Github, ExternalLink, ChevronRight } from "lucide-react";
 const projects = [
   {
     id: "p1",
-    title: "Autonomous Sales Agent",
-    tag: "AI Agent",
-    desc: "Multi-agent system that qualifies leads, drafts personalized emails and books meetings.",
-    features: ["LangGraph orchestration", "CRM sync", "Human-in-the-loop review", "Streamed responses"],
-    stack: ["Python", "LangGraph", "OpenAI", "Postgres", "FastAPI"],
-    challenges: "Guaranteeing deterministic tool routing without over-constraining the model.",
-    solution: "Introduced a validator node with structured JSON schema + retry policy.",
-    github: "#",
-    live: "#",
-    workflow: ["Trigger", "Enrich", "Draft", "Approve", "Send", "Log"],
+  title: "AI Autonomous Sales Agent",
+  tag: "AI Automation",
+  desc: "Automated outreach system using n8n and Groq AI to draft pitches and send emails via Telegram approval.",
+  features: [
+    "Webhook Lead Capture",
+    "Groq LLaMA-3 Pitch Drafts",
+    "Telegram Human Review",
+    "Automated Email Delivery"
+  ],
+  stack: ["n8n", "Groq AI", "Telegram API", "SMTP"],
+  challenges: "Preventing unauthorized email dispatch without human validation.",
+  solution: "Added a Telegram approval step before the final SMTP node.",
+  github: "https://github.com/selfdnc/AI-Autonomous-Sales-Agent",
+  live: "#",
+  workflow: ["Webhook", "Groq AI", "Telegram", "SMTP Email"],
   },
   {
     id: "p2",
