@@ -154,7 +154,7 @@ function TopNav({ onNav }: { onNav: (id: string) => void }) {
   const links = [
     ["about", "About"],
     ["projects", "Projects"],
-    ["services", "Services"],
+    ["skills", "Skills"],
     ["aistack", "Stack"],
     ["experience", "Experience"],
     ["contact", "Contact"],
