@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 
 interface TimelineItem {
   title: string;
-  sub: string;
-  date: string;
+  sub?: string;
+  date?: string;
   bullets: string[];
 }
 
@@ -28,9 +28,9 @@ export function Timeline({ items }: Props) {
             <div className="absolute -left-[26px] sm:-left-[34px] top-6 h-4 w-4 rounded-full bg-cyan-300 shadow-[0_0_15px_#7df9ff] ring-4 ring-background" />
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <h4 className="font-display font-bold text-cyan-50">{it.title}</h4>
-              <span className="font-mono text-xs text-cyan-300">{it.date}</span>
+              {it.date && <span className="font-mono text-xs text-cyan-300">{it.date}</span>}
             </div>
-            <p className="mt-1 text-sm text-cyan-200/80">{it.sub}</p>
+            {it.sub && <p className="mt-1 text-sm text-cyan-200/80">{it.sub}</p>}
             <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
               {it.bullets.map((b) => (
                 <li key={b} className="flex gap-2">

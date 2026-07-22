@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 interface Props {
   words: string[];
   className?: string;
 }
 
-export function Typewriter({ words, className }: Props) {
+export const Typewriter = memo(function Typewriter({ words, className }: Props) {
   const [index, setIndex] = useState(0);
   const [text, setText] = useState("");
   const [deleting, setDeleting] = useState(false);
@@ -36,4 +36,4 @@ export function Typewriter({ words, className }: Props) {
       <span className="inline-block w-[2px] h-[1em] translate-y-[3px] bg-cyan-300 ml-1 animate-pulse" />
     </span>
   );
-}
+});
