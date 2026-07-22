@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 interface Props {
   words: string[];
   className?: string;
 }
 
-export function Typewriter({ words, className }: Props) {
+export const Typewriter = memo(function Typewriter({ words, className }: Props) {
   const [index, setIndex] = useState(0);
   const [text, setText] = useState("");
   const [deleting, setDeleting] = useState(false);
