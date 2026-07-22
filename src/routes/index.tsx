@@ -71,6 +71,13 @@ function Home() {
     window.setTimeout(() => el.classList.remove("section-zoom-in"), 1000);
   }, []);
 
+  const handleNav = useCallback((id: string) => {
+    if (id === "skills") {
+      setOpenNode("skills");
+      return;
+    }
+    scrollTo(id);
+  }, [scrollTo]);
 
   const handleNode = useCallback((key: NodeKey) => {
     const sectionMap: Partial<Record<NodeKey, string>> = {
@@ -101,7 +108,7 @@ function Home() {
       <MouseGlow />
 
       <main className="relative">
-        <TopNav onNav={scrollTo} />
+        <TopNav onNav={handleNav} />
         <Hero onNode={handleNode} onNav={scrollTo} />
         <About />
         <ServicesSection />
@@ -147,7 +154,7 @@ function TopNav({ onNav }: { onNav: (id: string) => void }) {
   const links = [
     ["about", "About"],
     ["projects", "Projects"],
-    ["services", "Services"],
+    ["skills", "Skills"],
     ["aistack", "Stack"],
     ["experience", "Experience"],
     ["contact", "Contact"],
