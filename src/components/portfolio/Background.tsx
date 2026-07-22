@@ -108,30 +108,53 @@ export function ParticleBackground() {
       }
     };
 
+    // Pause the loop while the user is scrolling to keep the main thread free.
+    let scrollTimer: ReturnType<typeof setTimeout> | null = null;
+    const onScroll = () => {
+      if (running) {
+        running = false;
+        cancelAnimationFrame(raf);
+      }
+      if (scrollTimer) clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        if (!document.hidden && !running) {
+          running = true;
+          raf = requestAnimationFrame(draw);
+        }
+      }, 180);
+    };
+
     resize(); init(); draw();
     window.addEventListener("resize", onResize, { passive: true });
     window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
       running = false;
       cancelAnimationFrame(raf);
+      if (scrollTimer) clearTimeout(scrollTimer);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("scroll", onScroll);
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 
   return (
-    <div className="fixed inset-0 -z-10 pointer-events-none" style={{ transform: "translateZ(0)" }}>
-      <div className="absolute inset-0 grid-bg opacity-40" />
+    <div
+      className="fixed inset-0 -z-10 pointer-events-none"
+      style={{ transform: "translateZ(0)", contain: "strict" }}
+      aria-hidden
+    >
+      <div className="absolute inset-0 grid-bg opacity-40 pointer-events-none" />
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full pointer-events-none"
         style={{ transform: "translateZ(0)", willChange: "transform" }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/80" />
-      <div className="absolute -top-40 -left-40 h-[600px] w-[600px] rounded-full bg-cyan-500/10 blur-3xl animate-pulse-glow" style={{ willChange: "opacity, transform" }} />
-      <div className="absolute -bottom-40 -right-40 h-[600px] w-[600px] rounded-full bg-blue-500/10 blur-3xl animate-pulse-glow" style={{ willChange: "opacity, transform" }} />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/80 pointer-events-none" />
+      <div className="absolute -top-40 -left-40 h-[600px] w-[600px] rounded-full bg-cyan-500/10 blur-3xl animate-pulse-glow pointer-events-none" style={{ willChange: "opacity, transform" }} />
+      <div className="absolute -bottom-40 -right-40 h-[600px] w-[600px] rounded-full bg-blue-500/10 blur-3xl animate-pulse-glow pointer-events-none" style={{ willChange: "opacity, transform" }} />
     </div>
   );
 }
