@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 
 interface TimelineItem {
   title: string;
-  sub: string;
-  date: string;
+  sub?: string;
+  date?: string;
   bullets: string[];
 }
 
