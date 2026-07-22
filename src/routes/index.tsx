@@ -60,7 +60,7 @@ function Home() {
     return () => clearTimeout(t);
   }, []);
 
-  const scrollTo = (id: string) => {
+  const scrollTo = useCallback((id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
     el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -69,10 +69,10 @@ function Home() {
     void el.offsetWidth;
     el.classList.add("section-zoom-in");
     window.setTimeout(() => el.classList.remove("section-zoom-in"), 1000);
-  };
+  }, []);
 
 
-  const handleNode = (key: NodeKey) => {
+  const handleNode = useCallback((key: NodeKey) => {
     const sectionMap: Partial<Record<NodeKey, string>> = {
       hero: "hero",
       about: "about",
@@ -92,7 +92,7 @@ function Home() {
     }
     const id = sectionMap[key];
     if (id) scrollTo(id);
-  };
+  }, [scrollTo]);
 
   return (
     <>
