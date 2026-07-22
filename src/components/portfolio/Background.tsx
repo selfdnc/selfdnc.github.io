@@ -14,7 +14,9 @@ export function ParticleBackground() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     const particles: { x: number; y: number; vx: number; vy: number; r: number }[] = [];
-    const COUNT = 70;
+    const isCoarse = window.matchMedia("(pointer: coarse)").matches;
+    const isSmall = window.innerWidth < 768;
+    const COUNT = isCoarse || isSmall ? 24 : 28;
     const LINK_DIST = 140;
     const LINK_DIST_SQ = LINK_DIST * LINK_DIST;
 
