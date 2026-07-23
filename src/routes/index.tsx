@@ -291,7 +291,7 @@ function About() {
   const cards = [
     { icon: Target, title: "Career Goal", body: "Ship AI systems that quietly remove entire categories of manual work for teams." },
     { icon: Heart, title: "Passion", body: "Building agents that reason, act, and improve — end-to-end automation with real business impact." },
-    { icon: BookOpen, title: "Currently Learning", body: "Multi-agent orchestration, evals-first LLM engineering, and event-driven automation." },
+    { icon: BookOpen, title: "Currently Learning", body: "Advanced multi-agent systems, local RAG architectures with Qdrant, and production-grade n8n automation." },
     { icon: Compass, title: "Mission", body: "Make AI automation approachable for founders, ops teams, and non-technical builders." },
     { icon: Sparkles, title: "Future Vision", body: "A world where every operator has a personal AI copilot wired into their workflow." },
   ];
