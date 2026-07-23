@@ -408,31 +408,23 @@ function ExperienceSection() {
       <Timeline
         items={[
           {
-            title: "Lead AI Automation Engineer",
-            sub: "FluxAI Studio · Remote",
-            date: "2024 — Present",
+            title: "AI & Automation Developer",
+            sub: "Self-Employed · Independent",
+            date: "Present",
             bullets: [
-              "Shipped 20+ production AI agents across sales, support and ops.",
-              "Cut client operational cost by an average of 42% via n8n + LLM workflows.",
-              "Built internal eval harness for agent quality regression.",
+              "Designed and deployed autonomous AI Sales & Support Agents using n8n and custom LLM workflows.",
+              "Built RAG architectures with Qdrant vector database and Ollama/Groq for intelligent data retrieval.",
+              "Integrated webhooks, REST APIs, and third-party tools (CRM, Email, Messaging) to automate business operations.",
             ],
           },
           {
-            title: "AI Engineer",
-            sub: "Northwind Labs",
-            date: "2023 — 2024",
+            title: "AI Systems & Open Source Developer",
+            sub: "Building in Public · Projects",
+            date: "Present",
             bullets: [
-              "Owned LLM app platform used by 12 enterprise clients.",
-              "Designed multi-tenant RAG stack with hybrid retrieval.",
-            ],
-          },
-          {
-            title: "Full-Stack Developer",
-            sub: "Freelance",
-            date: "2021 — 2023",
-            bullets: [
-              "Delivered 30+ React + Node projects for global clients.",
-              "First automation workflows using Zapier and Make.",
+              "Containerized local LLM environments using Docker, Ollama, and Qdrant for cost-effective execution.",
+              "Wrote custom JavaScript and JSON data-parsing scripts inside n8n nodes for complex workflow routing.",
+              "Optimized API latency and payload structures for high-performance agent responses.",
             ],
           },
         ]}
