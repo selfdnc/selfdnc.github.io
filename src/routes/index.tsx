@@ -328,12 +328,12 @@ function About() {
 /* ---------- Services ---------- */
 function ServicesSection() {
   const services = [
-    { icon: Bot, title: "AI Chatbots", body: "Support, sales & internal knowledge bots with RAG and human-in-the-loop." },
-    { icon: Workflow, title: "Workflow Automation", body: "n8n / Make / Zapier pipelines that connect every SaaS your team uses." },
-    { icon: Cpu, title: "AI Agents", body: "Autonomous agents that reason, call tools and complete real business tasks." },
-    { icon: Puzzle, title: "Business Automation", body: "End-to-end automation of ops, sales & marketing playbooks." },
-    { icon: Sparkles, title: "API Integration", body: "Bridge OpenAI/Claude/Gemini with your stack via robust APIs." },
-    { icon: Wrench, title: "Custom AI Solutions", body: "From MVP to production — tailored, evaluated, monitored." },
+    { icon: Bot, title: "AI Chatbots & RAG", body: "Knowledge bots with RAG architecture and Qdrant vector search." },
+    { icon: Workflow, title: "Workflow Automation", body: "n8n / Make pipelines that connect every SaaS your team uses." },
+    { icon: Cpu, title: "Autonomous AI Agents", body: "Smart agents powered by Ollama and Groq to execute complex tasks." },
+    { icon: Puzzle, title: "Business Automation", body: "End-to-end automation of sales, support, and daily operations." },
+    { icon: Sparkles, title: "API Integration", body: "Seamlessly bridging REST APIs, webhooks, and custom LLM endpoints." },
+    { icon: Wrench, title: "Custom AI Solutions", body: "Self-hosted, cost-effective AI setups using Docker and local LLMs." },
   ];
   return (
     <Section id="services" eyebrow="Module · 02" title="Services">
