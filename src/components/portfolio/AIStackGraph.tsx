@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 
-const stack = ["OpenAI", "Claude", "Gemini", "Python", "Docker", "LangChain", "FastAPI", "React"];
+const stack = ["Docker", "n8n", "Agents", "Ollama", "Qdrant", "Groq", "Webhooks", "Gemini"];
 
 export function AIStackGraph() {
   const size = 480;
