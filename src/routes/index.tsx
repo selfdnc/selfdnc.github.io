@@ -451,6 +451,13 @@ function EducationSection() {
             bullets: ["Physics, Chemistry, Math, Computer Science.",
                       "Practicals: Electricity & Measurement, Volumetric & Qualitative Analysis."],
           },
+          {
+            title: "Secondary School",
+            bullets: [
+              "Focus: Mathematics, Science, English, and Foundational Computer Education.",
+              "Key Strengths: Built core logical reasoning, problem-solving skills, and academic consistency.",
+            ],
+          },
         ]}
       />
     </Section>
