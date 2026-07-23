@@ -465,37 +465,50 @@ function EducationSection() {
 }
 
 /* ---------- Certificates ---------- */
-function CertificatesSection({ onOpen }: { onOpen: (k: NodeKey) => void }) {
-  const certs = [
-    "OpenAI Certified Engineer",
-    "n8n Advanced Workflow",
-    "Google Cloud AI",
-    "LangChain Academy",
-    "Make Automation Pro",
-    "AWS AI Practitioner",
-  ];
+function CertificatesSection() {
   return (
     <Section id="certificates" eyebrow="Module · 08" title="Certificates">
-      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {certs.map((c, i) => (
-          <motion.button
-            key={c}
-            onClick={() => onOpen("certificates")}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.05 }}
-            whileHover={{ scale: 1.05, rotate: -0.5 }}
-            className="glass rounded-2xl p-6 text-left hover:glow-border transition-all"
-          >
-            <div className="flex items-center justify-between mb-6">
-              <Award className="h-8 w-8 text-cyan-300" />
-              <span className="font-mono text-[10px] text-muted-foreground">ID · 2024-{100 + i}</span>
+      <div className="max-w-xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="glass rounded-2xl p-6 text-left border border-cyan-500/20 bg-cyan-950/10 hover:glow-border transition-all"
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <Award className="h-7 w-7 text-cyan-300" />
+              <div>
+                <h3 className="font-display font-bold text-lg text-cyan-50">
+                  AI For Beginners
+                </h3>
+                <span className="text-xs text-cyan-300/80 font-mono">
+                  HP LIFE Certification
+                </span>
+              </div>
             </div>
-            <h3 className="font-display font-bold text-cyan-50">{c}</h3>
-            <p className="mt-1 text-xs text-muted-foreground">Verified · Click to preview</p>
-          </motion.button>
-        ))}
+            <span className="font-mono text-[10px] text-muted-foreground border border-cyan-500/20 px-2 py-0.5 rounded">
+              VERIFIED
+            </span>
+          </div>
+
+          {/* Privacy Note & Description */}
+          <div className="my-4 p-3 rounded-lg bg-neutral-900/60 border border-neutral-800 text-xs text-neutral-300 leading-relaxed">
+            <span className="font-bold text-yellow-400 font-mono">[SECURITY DIRECTIVE]</span>
+            <p className="mt-1">
+              To prevent identity theft & credential spoofing, official certificate copies are kept private on this public domain.
+            </p>
+          </div>
+
+          {/* Action Link (Resume/Email privacy style) */}
+          <a
+            href="mailto:oneselfdnc@gmail.com?subject=Request%20for%20Verified%20AI%20For%20Beginners%20Certificate"
+            className="inline-flex items-center justify-center w-full gap-2 px-4 py-2.5 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded-xl hover:bg-cyan-500/20 transition-all text-xs font-mono font-medium mt-2"
+          >
+            <Mail className="h-4 w-4" /> Request Verified Credentials
+          </a>
+        </motion.div>
       </div>
     </Section>
   );
