@@ -34,33 +34,7 @@ const projects = [
     live: "https://github.com/selfdnc/n8n-support-automation",
     workflow: ["Inbox", "AI Agent", "Classify", "Route", "Resolve"],
   },
-  {
-    id: "p3",
-    title: "LLM Document Intelligence",
-    tag: "LLM App",
-    desc: "Upload 1000+ page contracts and get clause-level answers with citations in seconds.",
-    features: ["Chunked ingestion", "Hybrid retrieval", "Citations", "Team workspaces"],
-    stack: ["Next.js", "LangChain", "Claude", "Pinecone", "Tailwind"],
-    challenges: "Balancing recall and cost on very long documents.",
-    solution: "Adaptive chunking + reranker with cached embeddings per document hash.",
-    github: "#",
-    live: "#",
-    workflow: ["Upload", "Chunk", "Embed", "Query", "Rerank", "Answer"],
-  },
-  {
-    id: "p4",
-    title: "Ops Copilot Dashboard",
-    tag: "Business Automation",
-    desc: "Real-time ops dashboard where an AI copilot suggests actions and executes with approval.",
-    features: ["Live metrics", "Action queue", "Audit log", "Role-based access"],
-    stack: ["React", "FastAPI", "Postgres", "OpenAI", "Redis"],
-    challenges: "Making AI suggestions explainable to non-technical operators.",
-    solution: "Rendered reasoning traces and confidence scores in the UI.",
-    github: "#",
-    live: "#",
-    workflow: ["Ingest", "Analyze", "Suggest", "Approve", "Execute", "Report"],
-  },
-];
+  ];
 
 export function ProjectsPanel() {
   const [openId, setOpenId] = useState<string | null>(null);
