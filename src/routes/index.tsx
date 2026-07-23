@@ -233,8 +233,8 @@ function Hero({ onNode, onNav }: { onNode: (k: NodeKey) => void; onNav: (id: str
         <MagneticButton onClick={() => onNav("projects")}>
           <Rocket className="h-4 w-4" /> View Projects
         </MagneticButton>
-        <MagneticButton as="a" href="/resume.pdf" download variant="ghost">
-          <Download className="h-4 w-4" /> Download Resume
+        <MagneticButton onClick={() => onNav("Resume")} variant="ghost">
+          <Download className="h-4 w-4" /> CV Resume
         </MagneticButton>
         <MagneticButton onClick={() => onNav("contact")} variant="ghost">
           <Mail className="h-4 w-4" /> Contact Me
