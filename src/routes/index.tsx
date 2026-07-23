@@ -557,16 +557,14 @@ function ResumeSection() {
           <div className="md:col-span-2">
             <h3 className="font-display text-2xl text-cyan-50">Full CV — Dev Chauhan</h3>
             <p className="mt-2 text-muted-foreground text-sm">
-              A single PDF with career, projects, stack and case studies.
-              Preview inline or download for offline review.
+              Public data-scraping protection active. Verified recruiters & clients can request full CV & credentials via email.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <MagneticButton as="a" href="/resume.pdf">
-                <Eye className="h-4 w-4" /> Preview
-              </MagneticButton>
-              <MagneticButton as="a" href="/resume.pdf" download variant="ghost">
-                <Download className="h-4 w-4" /> Download
-              </MagneticButton>
+              <MagneticButton 
+                    as="a" 
+                    href="mailto:oneselfdnc@gmail.com?subject=Request%20for%20Full%20CV%20%26%20Credentials">
+                <Mail className="h-4 w-4" /> Request Full CV
+            </MagneticButton>
             </div>
           </div>
           <div className="relative aspect-[3/4] rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/5 border border-cyan-400/30 flex items-center justify-center overflow-hidden">
