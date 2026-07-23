@@ -504,10 +504,10 @@ function CertificatesSection({ onOpen }: { onOpen: (k: NodeKey) => void }) {
 /* ---------- Achievements ---------- */
 function AchievementsSection() {
   const stats = [
-    { n: 60, suffix: "+", label: "Automations shipped" },
-    { n: 42, suffix: "%", label: "Avg cost reduction" },
-    { n: 25, suffix: "+", label: "Happy clients" },
-    { n: 3, suffix: "×", label: "Hackathon wins" },
+    { n: 10, suffix: "+", label: "Workflows & Agents Built" },
+    { n: 0, suffix: "$", label: "Cloud Cost (Local Ollama)" },
+    { n: 2, suffix: "s", label: "Avg Latency (Groq LPU)" },
+    { n: 100, suffix: "%", label: "Self-Hosted Architecture" },
   ];
   return (
     <Section id="achievements" eyebrow="Module · 09" title="Achievements">
