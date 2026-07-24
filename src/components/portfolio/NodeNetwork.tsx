@@ -123,7 +123,7 @@ export function NodeNetwork({ onNodeClick }: Props) {
         aria-label="Dev Chauhan profile"
       >
         <img
-          src={profileImg}
+          src={profileImg.url}
           alt="Dev Chauhan, AI Automation Engineer"
           className="h-full w-full object-cover"
           width={180}

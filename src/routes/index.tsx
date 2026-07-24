@@ -117,7 +117,7 @@ function Home() {
         <AIStackSection />
         <ExperienceSection />
         <EducationSection />
-        <CertificatesSection onOpen={setOpenNode} />
+        <CertificatesSection />
         <AchievementsSection />
         <ResumeSection />
         <ContactSection />
