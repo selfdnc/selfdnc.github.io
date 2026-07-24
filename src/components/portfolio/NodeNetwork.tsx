@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useMemo } from "react";
-import profileImg from "@/assets/profile.jpg";
+import profileImg from "@/assets/dev2.jpeg.asset.json";
 
 export type NodeKey =
   | "hero" | "about" | "skills" | "projects" | "education"
@@ -123,7 +123,7 @@ export function NodeNetwork({ onNodeClick }: Props) {
         aria-label="Dev Chauhan profile"
       >
         <img
-          src={profileImg}
+          src={profileImg.url}
           alt="Dev Chauhan, AI Automation Engineer"
           className="h-full w-full object-cover"
           width={180}
