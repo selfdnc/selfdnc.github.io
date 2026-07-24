@@ -598,7 +598,7 @@ function ContactSection() {
   const items = [
     { icon: Mail, label: "Email", value: "oneselfdnc@gmail.com", href: "mailto:oneselfdnc@gmail.com" },
     { icon: Linkedin, label: "LinkedIn", value: "/in/devchauhan", href: "#" },
-    { icon: Github, label: "GitHub", value: "@devchauhan", href: "https://github.com/selfdnc" },
+    { icon: Github, label: "GitHub", value: "@Selfdnc", href: "https://github.com/selfdnc" },
     { icon: MessageCircle, label: "WhatsApp", value: "+91 · on request", href: "#" },
     { icon: MapPin, label: "Location", value: "India", href: "#" },
   ];
