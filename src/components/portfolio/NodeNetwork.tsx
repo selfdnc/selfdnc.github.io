@@ -124,7 +124,7 @@ export function NodeNetwork({ onNodeClick }: Props) {
       >
         <img
           src={profileImg.url}
-          alt="Dev Chauhan, AI Automation Engineer"
+          alt="Dev Chauhan"
           className="h-full w-full object-cover"
           width={180}
           height={180}
