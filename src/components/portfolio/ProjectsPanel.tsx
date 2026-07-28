@@ -4,7 +4,38 @@ import { Github, ExternalLink, ChevronRight } from "lucide-react";
 
 const projects = [
   {
-  id: "p1",
+    id: "p1",
+  title: "AI Autonomous Sales Agent",
+  tag: "AI Automation",
+  desc: "Automated outreach system using n8n and Groq AI to draft pitches and send emails via Telegram approval.",
+  features: [
+    "Webhook Lead Capture",
+    "Groq LLaMA-3 Pitch Drafts",
+    "Telegram Human Review",
+    "Automated Email Delivery"
+  ],
+  stack: ["n8n", "Groq AI", "Telegram API", "SMTP"],
+  challenges: "Preventing unauthorized email dispatch without human validation.",
+  solution: "Added a Telegram approval step before the final SMTP node.",
+  github: "https://github.com/selfdnc/AI-Autonomous-Sales-Agent",
+  live: "#",
+  workflow: ["Webhook", "Groq AI", "Telegram", "SMTP Email"],
+  },
+  {
+    id: "p2",
+    title: "n8n Support Automation",
+    tag: "Workflow",
+    desc: "Local RAG support agent that classifies intents, retrieves docs, and routes queries.",
+    features: ["24/7 triage", "RAG knowledge base", "Webhook / Chat Trigger", "Smart Intent Triage"],
+    stack: ["n8n", "Ollama (Llama 3.2)", "Qdrant", "Node", "Docker"],
+    challenges: "Ensuring accurate data retrieval & classification from a local, private knowledge base.",
+    solution: "Deployed a local RAG agent to classify intents and retrieve support documents privately.",
+    github: "https://github.com/selfdnc/n8n-support-automation",
+    live: "https://github.com/selfdnc/n8n-support-automation",
+    workflow: ["Inbox", "AI Agent", "Classify", "Route", "Resolve"],
+  },
+  {
+  id: "p3",
   title: "AI Job Hunter Agent",
   tag: "n8n Workflow",
   desc: "Automated AI agent that fetches live remote job listings, filters API noise, and extracts precise role details without hallucination.",
@@ -32,38 +63,7 @@ const projects = [
     "AI Job Hunter Agent",
     "Respond to Webhook"
   ],
-}
-  {
-    id: "p2",
-  title: "AI Autonomous Sales Agent",
-  tag: "AI Automation",
-  desc: "Automated outreach system using n8n and Groq AI to draft pitches and send emails via Telegram approval.",
-  features: [
-    "Webhook Lead Capture",
-    "Groq LLaMA-3 Pitch Drafts",
-    "Telegram Human Review",
-    "Automated Email Delivery"
-  ],
-  stack: ["n8n", "Groq AI", "Telegram API", "SMTP"],
-  challenges: "Preventing unauthorized email dispatch without human validation.",
-  solution: "Added a Telegram approval step before the final SMTP node.",
-  github: "https://github.com/selfdnc/AI-Autonomous-Sales-Agent",
-  live: "#",
-  workflow: ["Webhook", "Groq AI", "Telegram", "SMTP Email"],
-  },
-  {
-    id: "p3",
-    title: "n8n Support Automation",
-    tag: "Workflow",
-    desc: "Local RAG support agent that classifies intents, retrieves docs, and routes queries.",
-    features: ["24/7 triage", "RAG knowledge base", "Webhook / Chat Trigger", "Smart Intent Triage"],
-    stack: ["n8n", "Ollama (Llama 3.2)", "Qdrant", "Node", "Docker"],
-    challenges: "Ensuring accurate data retrieval & classification from a local, private knowledge base.",
-    solution: "Deployed a local RAG agent to classify intents and retrieve support documents privately.",
-    github: "https://github.com/selfdnc/n8n-support-automation",
-    live: "https://github.com/selfdnc/n8n-support-automation",
-    workflow: ["Inbox", "AI Agent", "Classify", "Route", "Resolve"],
-  },
+},
   ];
 
 export function ProjectsPanel() {
