@@ -4,7 +4,37 @@ import { Github, ExternalLink, ChevronRight } from "lucide-react";
 
 const projects = [
   {
-    id: "p1",
+  id: "p1",
+  title: "AI Job Hunter Agent",
+  tag: "n8n Workflow",
+  desc: "Automated AI agent that fetches live remote job listings, filters API noise, and extracts precise role details without hallucination.",
+  features: [
+    "Live API Integration",
+    "Zero-Hallucination Extraction",
+    "Webhook & Terminal Trigger",
+    "Smart Data Sanitization"
+  ],
+  stack: [
+    "n8n",
+    "Groq (Llama 3.1)",
+    "JavaScript",
+    "Remote OK API",
+    "cURL / Webhook"
+  ],
+  challenges: "Filtering out legal disclaimers/junk metadata from live API payloads while avoiding context token limits and LLM hallucinations.",
+  solution: "Built a custom JavaScript data-cleaning node in n8n to slice clean job listings and passed them to a Groq-powered AI Agent for exact parsing.",
+  github: "https://github.com/selfdnc/AI-JobHunter-Agent",
+  live: "https://github.com/selfdnc/AI-JobHunter-Agent",
+  workflow: [
+    "Webhook",
+    "HTTP Request",
+    "Data Cleanup (JS)",
+    "AI Job Hunter Agent",
+    "Respond to Webhook"
+  ],
+}
+  {
+    id: "p2",
   title: "AI Autonomous Sales Agent",
   tag: "AI Automation",
   desc: "Automated outreach system using n8n and Groq AI to draft pitches and send emails via Telegram approval.",
@@ -22,7 +52,7 @@ const projects = [
   workflow: ["Webhook", "Groq AI", "Telegram", "SMTP Email"],
   },
   {
-    id: "p2",
+    id: "p3",
     title: "n8n Support Automation",
     tag: "Workflow",
     desc: "Local RAG support agent that classifies intents, retrieves docs, and routes queries.",
