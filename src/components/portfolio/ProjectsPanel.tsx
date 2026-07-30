@@ -78,8 +78,8 @@ const projects = [
   stack: ["n8n", "Google Gemini AI", "Google Sheets API", "JavaScript", "cURL / Webhooks"],
   challenges: "Processing image binary payloads dynamically via API endpoints without relying on local file path dependencies.",
   solution: "Built a fully event-driven n8n pipeline using Webhook POST triggers, custom JavaScript binary parsers, and Gemini Vision models to structure data directly into Google Sheets.",
-  github: "https://github.com/selfdnc/n8n-image-analysis-ai-agent",
-  live: "https://github.com/selfdnc/n8n-image-analysis-ai-agent",
+  github: "https://github.com/selfdnc/image-analysis-ai-agent",
+  live: "https://github.com/selfdnc/image-analysis-ai-agent",
   workflow: ["Webhook POST", "Duplicate Check", "Gemini Vision AI", "Data Formatter", "Google Sheets"]
 }
   ];
