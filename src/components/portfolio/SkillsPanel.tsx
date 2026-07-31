@@ -15,21 +15,20 @@ export const skillCategories = [
   {
     name: "APIs",
     skills: [
-      { name: "OpenAI API" },
       { name: "Groq API" },
-      { name: "Webhook" },
-      { name: "REST API" },
+      { name: "Gemini API" },
+      { name: "Telegarm API" },
+      { name: "OpenAI API" },
     ],
   },
   {
     name: "Automation",
     skills: [
-      { name: "n8n" },
-      { name: "Make" },
+      { name: "n8n & Make" },
       { name: "Trigger & Router" },
-      { name: "Workflows" },
-      { name: "Google Sheets" },
-      { name: "Gmail" },
+      { name: "APIs & Webhook" },
+      { name: "JSON" },
+      { name: "System Design" },
     ],
   },
   {
