@@ -81,6 +81,24 @@ const projects = [
   github: "https://github.com/selfdnc/image-analysis-ai-agent",
   live: "https://github.com/selfdnc/image-analysis-ai-agent",
   workflow: ["Webhook POST", "Duplicate Check", "Gemini Vision AI", "Data Formatter", "Google Sheets"]
+},
+{
+  id: "p5",
+  title: "Social Media Autopilot",
+  tag: "AI Agent",
+  desc: "Event-driven autonomous AI agent pipeline that receives chat prompts, retains conversation memory, generates AI visual assets, and auto-posts across Telegram & Discord.",
+  features: [
+    "Autonomous Intent Reasoning",
+    "Conversational Short-Term Memory",
+    "FLUX / Hugging Face Media Generation",
+    "Multi-Platform Discord & Telegram Publishing"
+  ],
+  stack: ["n8n", "Google Gemini 2.0", "Hugging Face (MCP)", "Discord Webhooks", "Telegram Bot API"],
+  challenges: "Managing autonomous multi-tool calling sequences dynamically while maintaining conversation memory and channel posting reliability.",
+  solution: "Constructed an end-to-end n8n agent workflow using Gemini reasoning, Simple Window Memory, and Hugging Face inference tools connected seamlessly to Discord webhooks.",
+  github: "https://github.com/selfdnc/Social-Media-Autopilot",
+  live: "https://github.com/selfdnc/Social-Media-Autopilot",
+  workflow: ["Telegram Trigger", "n8n AI Agent", "Gemini 2.0 LLM", "Hugging Face Tool", "Discord Webhook", "Telegram Response"]
 }
   ];
 
