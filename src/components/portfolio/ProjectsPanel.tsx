@@ -4,37 +4,24 @@ import { Github, ExternalLink, ChevronRight } from "lucide-react";
 
 const projects = [
   {
-    id: "p1",
-  title: "AI Autonomous Sales Agent",
-  tag: "AI Automation",
-  desc: "Automated outreach system using n8n and Groq AI to draft pitches and send emails via Telegram approval.",
+  id: "p5",
+  title: "Social Media Autopilot",
+  tag: "AI Agent",
+  desc: "Event-driven autonomous AI agent pipeline that receives chat prompts, retains conversation memory, generates AI visual assets, and auto-posts across Telegram & Discord.",
   features: [
-    "Webhook Lead Capture",
-    "Groq LLaMA-3 Pitch Drafts",
-    "Telegram Human Review",
-    "Automated Email Delivery"
+    "Autonomous Intent Reasoning",
+    "Conversational Short-Term Memory",
+    "FLUX / Hugging Face Media Generation",
+    "Multi-Platform Discord & Telegram Publishing"
   ],
-  stack: ["n8n", "Groq AI", "Telegram API", "SMTP"],
-  challenges: "Preventing unauthorized email dispatch without human validation.",
-  solution: "Added a Telegram approval step before the final SMTP node.",
-  github: "https://github.com/selfdnc/AI-Autonomous-Sales-Agent",
-  live: "#",
-  workflow: ["Webhook", "Groq AI", "Telegram", "SMTP Email"],
-  },
-  {
-    id: "p2",
-    title: "n8n Support Automation",
-    tag: "Workflow",
-    desc: "Local RAG support agent that classifies intents, retrieves docs, and routes queries.",
-    features: ["24/7 triage", "RAG knowledge base", "Webhook / Chat Trigger", "Smart Intent Triage"],
-    stack: ["n8n", "Ollama (Llama 3.2)", "Qdrant", "Node", "Docker"],
-    challenges: "Ensuring accurate data retrieval & classification from a local, private knowledge base.",
-    solution: "Deployed a local RAG agent to classify intents and retrieve support documents privately.",
-    github: "https://github.com/selfdnc/n8n-support-automation",
-    live: "https://github.com/selfdnc/n8n-support-automation",
-    workflow: ["Inbox", "AI Agent", "Classify", "Route", "Resolve"],
-  },
-  {
+  stack: ["n8n", "Google Gemini 2.0", "Hugging Face (MCP)", "Discord Webhooks", "Telegram Bot API"],
+  challenges: "Managing autonomous multi-tool calling sequences dynamically while maintaining conversation memory and channel posting reliability.",
+  solution: "Constructed an end-to-end n8n agent workflow using Gemini reasoning, Simple Window Memory, and Hugging Face inference tools connected seamlessly to Discord webhooks.",
+  github: "https://github.com/selfdnc/Social-Media-Autopilot",
+  live: "https://github.com/selfdnc/Social-Media-Autopilot",
+  workflow: ["Telegram Trigger", "n8n AI Agent", "Gemini 2.0 LLM", "Hugging Face Tool", "Discord Webhook", "Telegram Response"]
+},
+   {
   id: "p3",
   title: "AI Job Hunter Agent",
   tag: "n8n Workflow",
@@ -65,6 +52,37 @@ const projects = [
   ],
 },
   {
+    id: "p1",
+  title: "AI Autonomous Sales Agent",
+  tag: "AI Automation",
+  desc: "Automated outreach system using n8n and Groq AI to draft pitches and send emails via Telegram approval.",
+  features: [
+    "Webhook Lead Capture",
+    "Groq LLaMA-3 Pitch Drafts",
+    "Telegram Human Review",
+    "Automated Email Delivery"
+  ],
+  stack: ["n8n", "Groq AI", "Telegram API", "SMTP"],
+  challenges: "Preventing unauthorized email dispatch without human validation.",
+  solution: "Added a Telegram approval step before the final SMTP node.",
+  github: "https://github.com/selfdnc/AI-Autonomous-Sales-Agent",
+  live: "#",
+  workflow: ["Webhook", "Groq AI", "Telegram", "SMTP Email"],
+  },
+  {
+    id: "p2",
+    title: "n8n Support Automation",
+    tag: "RAG",
+    desc: "Local RAG support agent that classifies intents, retrieves docs, and routes queries.",
+    features: ["24/7 triage", "RAG knowledge base", "Webhook / Chat Trigger", "Smart Intent Triage"],
+    stack: ["n8n", "Ollama (Llama 3.2)", "Qdrant", "Node", "Docker"],
+    challenges: "Ensuring accurate data retrieval & classification from a local, private knowledge base.",
+    solution: "Deployed a local RAG agent to classify intents and retrieve support documents privately.",
+    github: "https://github.com/selfdnc/n8n-support-automation",
+    live: "https://github.com/selfdnc/n8n-support-automation",
+    workflow: ["Inbox", "AI Agent", "Classify", "Route", "Resolve"],
+  },
+  {
   id: "p4",
   title: "AI Image Analysis & Structured Extraction",
   tag: "AI Automation",
@@ -82,24 +100,6 @@ const projects = [
   live: "https://github.com/selfdnc/image-analysis-ai-agent",
   workflow: ["Webhook POST", "Duplicate Check", "Gemini Vision AI", "Data Formatter", "Google Sheets"]
 },
-{
-  id: "p5",
-  title: "Social Media Autopilot",
-  tag: "AI Agent",
-  desc: "Event-driven autonomous AI agent pipeline that receives chat prompts, retains conversation memory, generates AI visual assets, and auto-posts across Telegram & Discord.",
-  features: [
-    "Autonomous Intent Reasoning",
-    "Conversational Short-Term Memory",
-    "FLUX / Hugging Face Media Generation",
-    "Multi-Platform Discord & Telegram Publishing"
-  ],
-  stack: ["n8n", "Google Gemini 2.0", "Hugging Face (MCP)", "Discord Webhooks", "Telegram Bot API"],
-  challenges: "Managing autonomous multi-tool calling sequences dynamically while maintaining conversation memory and channel posting reliability.",
-  solution: "Constructed an end-to-end n8n agent workflow using Gemini reasoning, Simple Window Memory, and Hugging Face inference tools connected seamlessly to Discord webhooks.",
-  github: "https://github.com/selfdnc/Social-Media-Autopilot",
-  live: "https://github.com/selfdnc/Social-Media-Autopilot",
-  workflow: ["Telegram Trigger", "n8n AI Agent", "Gemini 2.0 LLM", "Hugging Face Tool", "Discord Webhook", "Telegram Response"]
-}
   ];
 
 export function ProjectsPanel() {
